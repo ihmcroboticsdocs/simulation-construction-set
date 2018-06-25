@@ -73,9 +73,18 @@
     "IHMC Home": "IHMC Home",
     "All IHMC Docs": "All IHMC Docs",
     "About IHMC": "About IHMC",
-    "Introduction": "Introduction",
-    "Tutorials": "Tutorials",
-    "API": "API"
+    "Getting Started": "Getting Started",
+    "Using the SCS GUI": "Using the SCS GUI",
+    "Creating a New Simulation": "Creating a New Simulation",
+    "Adding Control to a Simulation": "Adding Control to a Simulation",
+    "Creating Links": "Creating Links",
+    "Creating Robot with Multiple Joints": "Creating Robot with Multiple Joints",
+    "Ground Contact Modeling": "Ground Contact Modeling",
+    "Implementing Closed-Chain Mechanisms Using External Force Points": "Implementing Closed-Chain Mechanisms Using External Force Points",
+    "SCS API": "SCS API",
+    "Link and LinkGraphicsDescription API": "Link and LinkGraphicsDescription API",
+    "Robot and Joint API": "Robot and Joint API",
+    "Kinematic, ExternalForce, and GroundContactPoint API": "Kinematic, ExternalForce, and GroundContactPoint API"
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",
