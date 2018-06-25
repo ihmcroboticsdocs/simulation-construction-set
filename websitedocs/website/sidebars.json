@@ -1,6 +1,6 @@
  {
     "Simulation Construction Set Docs": {
-      "Introduction": ["scs-home"],
+      "Introduction": ["scshome"],
         "Tutorials" : { 
           "Getting Started" : ["00-quickstart", "01-requirements", "02-jar-releases", "03-local-maven-jar", "04-depending-on-source"],
           "Using the SCS GUI" : ["00-running-a-simulation", "01-change-camera-settings", "02-variable-view", "03-create-graph", "04-toolbar-playback-and-graphs", "05-data-buffer", "06-export-data", "07-snapshot"],
