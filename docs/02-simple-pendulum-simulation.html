@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>SimplePendulumSimulation.java · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Every SCS simulation requires an instance of `us.ihmc.simulationconstructionset.SimulationConstructionSet` and a Thread to run it.   IHMC&#x27;s convention is to create a &#x27;simulation&#x27; class which performs this function."/><meta property="og:title" content="SimplePendulumSimulation.java · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="Every SCS simulation requires an instance of `us.ihmc.simulationconstructionset.SimulationConstructionSet` and a Thread to run it.   IHMC&#x27;s convention is to create a &#x27;simulation&#x27; class which performs this function."/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>SimplePendulumSimulation.java</h1></header><article><div><span><p>Every SCS simulation requires an instance of <code>us.ihmc.simulationconstructionset.SimulationConstructionSet</code> and a Thread to run it.   IHMC's convention is to create a 'simulation' class which performs this function.</p>
+<h3><a class="anchor" aria-hidden="true" id="1-create-the-simplependulumsimulation-class"></a><a href="#1-create-the-simplependulumsimulation-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Create the SimplePendulumSimulation Class</h3>
+<p>In the java directory of your project, <code>src/main/java</code>, create a new java class <code>us.ihmc.exampleSimulations.simplePendulum.SimplePendulumSimulation</code>.
+The simulation class is responsible for instantiating an instance of <code>SimulationConstructionSet</code> and starting a new <code>Thread</code> to run it.</p>
+<p>The simplest version of this is as follows:</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.simplePendulum;
+
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSet;
+
+<span class="hljs-comment">/**
+ * SimplePendulumSimulation
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimplePendulumSimulation</span>
+</span>{
+   <span class="hljs-keyword">private</span> SimulationConstructionSet sim;
+
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SimplePendulumSimulation</span><span class="hljs-params">()</span>
+   </span>{
+      sim = <span class="hljs-keyword">new</span> SimulationConstructionSet();
+
+      Thread myThread = <span class="hljs-keyword">new</span> Thread(sim);
+      myThread.start();
+   }
+
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>
+   </span>{
+      <span class="hljs-keyword">new</span> SimplePendulumSimulation();
+   }
+}
+</code></pre>
+<ul>
+<li><strong>Copy the Code and Run the Simulation</strong>
+Replace your class contents with the above and run the simulation.
+Don't forget to add <code>-Xms4096m -Xmx4096m</code> to your VM's run configuration as specified in the [Quick Start]. Since there is no robot in your simulation, you will just get an empty world as follows:
+<img src="/img/documentation/scsTutorial/blank-Simulation.png" alt="blank simulation"></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="2set-the-simulation-parameters"></a><a href="#2set-the-simulation-parameters" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.Set the Simulation Parameters</h3>
+<p>Before we add a robot, there are some basic parameters and settings that you should apply to <code>SimulationConstructionSet</code>.  Replace the simulation class contents with the following:</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.simplePendulum;
+
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSet;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+
+<span class="hljs-comment">/**
+ * SimplePendulumSimulation
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimplePendulumSimulation</span>
+</span>{
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> DT = <span class="hljs-number">0.001</span>;
+   <span class="hljs-keyword">private</span> SimulationConstructionSet sim;
+
+
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SimplePendulumSimulation</span><span class="hljs-params">()</span>
+   </span>{
+      SimulationConstructionSetParameters parameters = <span class="hljs-keyword">new</span> SimulationConstructionSetParameters();
+      parameters.setDataBufferSize(<span class="hljs-number">32000</span>);    
+
+      sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(parameters);
+      sim.setDT(DT, <span class="hljs-number">20</span>);                      
+      sim.setGroundVisible(<span class="hljs-keyword">true</span>);             
+      sim.setCameraPosition(<span class="hljs-number">0</span>, -<span class="hljs-number">9.0</span>, <span class="hljs-number">0.6</span>);    
+      sim.setCameraFix(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.70</span>);       
+      sim.setSimulateDuration(<span class="hljs-number">60.0</span>);          
+
+      Thread myThread = <span class="hljs-keyword">new</span> Thread(sim);
+      myThread.start();
+   }
+
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>
+   </span>{
+      <span class="hljs-keyword">new</span> SimplePendulumSimulation();
+   }
+}
+</code></pre>
+<p><br></p>
+<p>If you run the simulation now, it will not look any different, but what you have done is:</p>
+<ul>
+<li><p><strong>Create Simulation Parameters</strong>  <br>
+<code>SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();</code>
+Instantiate a <code>SimulationConstructionSetParameters</code> object
+<code>parameters.setDataBufferSize(32000);</code>
+Sets the initial data buffer size to be 32000 bytes.</p></li>
+<li><p><strong>Create a new Simulation and set its properties</strong>
+<code>sim = new SimulationConstructionSet(parameters);</code>  <br>
+Instantiate a new Runnable SimulationConstructionSet object with default values and a buffer size of 32000 bytes as defined in <code>parameters</code> object<br>
+<code>sim.setDT(DT, 20);</code>  <br>
+Sets the simulation's delta time value to be 20 milliseconds.<br>
+<code>sim.setGroundVisible(true);</code>  <br>
+Sets the ground to be visible in the 3D view.<br>
+<code>sim.setCameraPosition(0, -9.0, 0.6);</code>  <br>
+<code>sim.setCameraFix(0.0, 0.0, 0.70);</code>  <br>
+Sets the location and orientation of the camera in the 3D world.<br>
+<code>sim.setSimulateDuration(60.0);</code>  <br>
+Specifies that the simulation will only run for a duration of 60 seconds.  For this tutorial, this allows the simulation to run to a point where it does not overflow the data buffer.</p></li>
+</ul>
+<p>Now it's time to add a robot.</p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

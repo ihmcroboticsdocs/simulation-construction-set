@@ -1,0 +1,514 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Description and Analysis · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="###  1. Examine the FlyballGovernorRobot source code"/><meta property="og:title" content="Description and Analysis · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="###  1. Examine the FlyballGovernorRobot source code"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Description and Analysis</h1></header><article><div><span><h3><a class="anchor" aria-hidden="true" id="1-examine-the-flyballgovernorrobot-source-code"></a><a href="#1-examine-the-flyballgovernorrobot-source-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Examine the FlyballGovernorRobot source code</h3>
+<p>Add the following constructor to your FlyballGovernorRobot class.<br>
+Note where the ExternalForcePoints are created and attached.</p>
+<pre><code class="hljs css languages- java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FlyballGovernorRobot</span><span class="hljs-params">(String nameSuffix, FlyballGovernorCommonControlParameters controllerParameters, Vector3d baseWorldOffset)</span>
+    </span>{
+        <span class="hljs-keyword">super</span>(<span class="hljs-string">"FlyballGovernor"</span> + nameSuffix);
+        PinJoint rotation = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"rotation"</span>, baseWorldOffset, <span class="hljs-keyword">this</span>, Axis.Z);
+        rotation.setDamping(DAMPING1);
+        Link centerRod = centerRod();
+        rotation.setLink(centerRod);
+        <span class="hljs-keyword">this</span>.addRootJoint(rotation);
+        <span class="hljs-comment">// One of the flyballs</span>
+        PinJoint upperPivot1 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"upperPivot1"</span>, <span class="hljs-keyword">new</span> Vector3d(R1, <span class="hljs-number">0.0</span>, L1), <span class="hljs-keyword">this</span>, Axis.Y);
+        upperPivot1.setInitialState(-<span class="hljs-number">0.3</span>, <span class="hljs-number">0.0</span>);
+        upperPivot1.setDamping(DAMPING2);
+        upperPivot1.setLimitStops(-Math.PI / <span class="hljs-number">2.0</span>, -<span class="hljs-number">0.2</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);
+        Link flyBall1 = flyBallLink();
+        upperPivot1.setLink(flyBall1);
+        rotation.addJoint(upperPivot1);
+        PinJoint lowerPivot1 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"lowerPivot1"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -<span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span> * L2), <span class="hljs-keyword">this</span>, Axis.Y);
+        lowerPivot1.setInitialState(<span class="hljs-number">0.5</span>, <span class="hljs-number">0.0</span>);
+        Link loopLink1 = loopLink();
+        lowerPivot1.setLink(loopLink1);
+        upperPivot1.addJoint(lowerPivot1);
+        constraint1A = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint1A"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3), <span class="hljs-keyword">this</span>);
+        lowerPivot1.addExternalForcePoint(constraint1A);
+        <span class="hljs-comment">// The other flyball</span>
+        PinJoint upperPivot2 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"upperPivot2"</span>, <span class="hljs-keyword">new</span> Vector3d(-R1, <span class="hljs-number">0.0</span>, L1), <span class="hljs-keyword">this</span>, Axis.Y);
+        upperPivot2.setInitialState(<span class="hljs-number">0.3</span>, <span class="hljs-number">0.0</span>);
+        upperPivot2.setDamping(DAMPING2);
+        upperPivot2.setLimitStops(<span class="hljs-number">0.2</span>, Math.PI / <span class="hljs-number">2.0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);
+        Link flyBall2 = flyBallLink();
+        upperPivot2.setLink(flyBall2);
+        rotation.addJoint(upperPivot2);
+        PinJoint lowerPivot2 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"lowerPivot2"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -<span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span> * L2), <span class="hljs-keyword">this</span>, Axis.Y);
+        lowerPivot2.setInitialState(-<span class="hljs-number">0.5</span>, <span class="hljs-number">0.0</span>);
+        Link loopLink2 = loopLink();
+        lowerPivot2.setLink(loopLink2);
+        upperPivot2.addJoint(lowerPivot2);
+        constraint2A = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint2A"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3), <span class="hljs-keyword">this</span>);
+        lowerPivot2.addExternalForcePoint(constraint2A);
+
+        <span class="hljs-comment">// The sliding Cylinder:</span>
+        CylinderJoint cylinderJoint = <span class="hljs-keyword">new</span> CylinderJoint(<span class="hljs-string">"cylinder_theta"</span>, <span class="hljs-string">"cylinder_z"</span>, baseWorldOffset, <span class="hljs-keyword">this</span>, Axis.Z);
+        cylinderJoint.setInitialState(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.05</span>, <span class="hljs-number">0.0</span>);
+        Link cylinderLink = cylinderLink();
+        cylinderJoint.setLink(cylinderLink);
+        <span class="hljs-keyword">this</span>.addRootJoint(cylinderJoint);
+        constraint1B = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint1B"</span>, <span class="hljs-keyword">new</span> Vector3d(R4, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>), <span class="hljs-keyword">this</span>);
+        constraint2B = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint2B"</span>, <span class="hljs-keyword">new</span> Vector3d(-R4, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>), <span class="hljs-keyword">this</span>);
+        cylinderJoint.addExternalForcePoint(constraint1B);
+        cylinderJoint.addExternalForcePoint(constraint2B);
+        <span class="hljs-keyword">this</span>.setController(<span class="hljs-keyword">this</span>);
+
+        k_feedback = controllerParameters.getK_feedback();
+        q_d_cylinder_z = controllerParameters.getQ_d_cylinder_z();
+        <span class="hljs-keyword">this</span>.initControl();
+    }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="2-add-the-link-methods-to-the-flyballgovernorrobot-class"></a><a href="#2-add-the-link-methods-to-the-flyballgovernorrobot-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Add the link methods to the FlyballGovernorRobot class</h3>
+<p>These methods build the links for the simulation.</p>
+<pre><code class="hljs css languages- java"><span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">centerRod</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Center Rod"</span>);
+        ret.setMass(M1);
+        ret.setMomentOfInertia(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, Izz1);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, L1 / <span class="hljs-number">2.0</span>);
+
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.addCylinder(L1, R1, YoAppearance.Red());
+        ret.setLinkGraphics(linkGraphics);
+
+        <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">flyBallLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Flyball"</span>);
+        ret.setMass(M2);
+        ret.setMomentOfInertia(Ixx2, Iyy2, Izz2);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L2);
+
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L2);
+        linkGraphics.addCylinder(L2, R2);
+        linkGraphics.addSphere(SPHERE_R, YoAppearance.DarkGreen());
+        ret.setLinkGraphics(linkGraphics);
+
+        <span class="hljs-keyword">return</span> ret;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">loopLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Loop"</span>);
+        ret.setMass(M3);
+        ret.setMomentOfInertia(Ixx3, Iyy3, Izz3);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3 / <span class="hljs-number">2.0</span>);
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3);
+        linkGraphics.addCylinder(L3, R3);
+        ret.setLinkGraphics(linkGraphics);
+        <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">cylinderLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Cylinder Link"</span>);
+        ret.setMass(M4);
+        ret.setMomentOfInertia(Ixx4, Iyy4, Izz4);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>);
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.addCylinder(L4, R4, YoAppearance.DarkBlue());
+        linkGraphics.addCylinder(L4 / <span class="hljs-number">8.0</span>, <span class="hljs-number">1.1</span> * R4);
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">7.0</span> / <span class="hljs-number">8.0</span> * L4);
+        linkGraphics.addCylinder(L4 / <span class="hljs-number">8.0</span>, <span class="hljs-number">1.1</span> * R4);
+        ret.setLinkGraphics(linkGraphics);
+        <span class="hljs-keyword">return</span> ret;
+    }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="3-add-the-doconstraint-method-in-flyballgovernorsimpleclosedloopconstraint"></a><a href="#3-add-the-doconstraint-method-in-flyballgovernorsimpleclosedloopconstraint" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Add the doConstraint method in FlyballGovernorSimpleClosedLoopConstraint</h3>
+<pre><code class="hljs css languages- java">    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doConstraint</span><span class="hljs-params">(YoFramePoint positionA, YoFramePoint positionB, YoFrameVector velocityA, YoFrameVector velocityB,
+                              YoFrameVector forceA, YoFrameVector forceB, DoubleYoVariable positionErrorMagnitude)</span>
+    </span>{
+        positionA.get(posA);
+        positionB.get(posB);
+        velocityA.get(velA);
+        velocityB.get(velB);
+        springForceA.sub(posB, posA);
+        positionErrorMagnitude.set(springForceA.length());
+        springForceA.scale(constraintGain.getDoubleValue());
+        dampingForceA.sub(velB, velA);
+        dampingForceA.scale(constraintDamp.getDoubleValue());
+        newForceA.add(springForceA, dampingForceA);
+        newForceB.scale(-<span class="hljs-number">1.0</span>, newForceA);
+
+        forceA.set(newForceA);
+        forceB.set(newForceB);
+    }
+</code></pre>
+<p>Here is where the constraint forces between two points, A and B, are generated. We see that for each constraint, a linear spring-damper is used to &quot;glue&quot; the two ExternalForcePoints together.</p>
+<h3><a class="anchor" aria-hidden="true" id="4-run-the-flyballgovernorsimulation-class"></a><a href="#4-run-the-flyballgovernorsimulation-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Run the FlyballGovernorSimulation class</h3>
+<p>Note that the blue cylinder rises as the device spins faster. To vary the desired speed, change the value of <code>q_d_cylinder_z</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="5-change-the-value-of-constraintgain-and-constraintdamp-to-00-while-in-simulation"></a><a href="#5-change-the-value-of-constraintgain-and-constraintdamp-to-00-while-in-simulation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Change the value of constraintGain and constraintDamp to 0.0 while in simulation</h3>
+<p>See that the constraint is no longer enforced and the &quot;glue&quot; joint comes apart.</p>
+<h3><a class="anchor" aria-hidden="true" id="6-now-look-at-the-docontrol-function-in-flyballgovernorrobot"></a><a href="#6-now-look-at-the-docontrol-function-in-flyballgovernorrobot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Now look at the doControl() function in FlyballGovernorRobot</h3>
+<p>The feedback mechanism used in the <code>FlyballGovernor</code> is <code>tau_rotation.set(k_feedback.getDoubleValue() * (q_d_cylinder_z.getDoubleValue() - q_cylinder_z.getDoubleValue()));</code>
+The torque on the rotation joint is proportional to the height of the cylinder. This is an example of how flyballs on locomotive engines are used. Flyball governors throttle steam engines proportionally to the height of the cylinder. In essence, a flyball governor provides velocity feedback control completely mechanically.</p>
+<h3><a class="anchor" aria-hidden="true" id="7-try-implementing-a-closed-loop-mechanism-on-your-own"></a><a href="#7-try-implementing-a-closed-loop-mechanism-on-your-own" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Try implementing a closed-loop mechanism on your own</h3>
+<p>Examples include four-bar linkages or a necklace with rigid links.</p>
+<h3><a class="anchor" aria-hidden="true" id="full-code-for-classes"></a><a href="#full-code-for-classes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full Code for Classes</h3>
+<p><details>
+<summary>FlyballGovernorSimulation</summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.flyballGovernor;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSet;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.YoVariableHolder;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlyballGovernorSimulation</span>
+</span>{
+    <span class="hljs-keyword">private</span> SimulationConstructionSet sim;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FlyballGovernorSimulation</span><span class="hljs-params">()</span>
+    </span>{
+        FlyballGovernorCommonControlParameters controllerParameters = <span class="hljs-keyword">new</span> FlyballGovernorCommonControlParameters();
+
+        FlyballGovernorRobot flyballGovernor1 = <span class="hljs-keyword">new</span> FlyballGovernorRobot(<span class="hljs-string">"UsualConstraint"</span>, controllerParameters, <span class="hljs-keyword">new</span> Vector3d());
+        flyballGovernor1.setController(<span class="hljs-keyword">new</span> FlyballGovernorSimpleClosedLoopConstraintController(flyballGovernor1));
+        sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(flyballGovernor1);
+        sim.addYoVariableRegistry(controllerParameters.getYoVariableRegistry());
+        sim.setCameraPosition(-<span class="hljs-number">0.0</span>, <span class="hljs-number">2.7265</span>, <span class="hljs-number">0.2599</span>);
+        sim.setCameraFix(<span class="hljs-number">0.0132</span>, -<span class="hljs-number">0.0245</span>, <span class="hljs-number">0.113</span>);
+        sim.setupEntryBox(<span class="hljs-string">"q_d_cylinder_z"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"k_feedback"</span>);
+        sim.setupGraph(<span class="hljs-string">"qd_rotation"</span>);
+        sim.setupGraph(<span class="hljs-keyword">new</span> String[] {<span class="hljs-string">"q_d_cylinder_z"</span>, <span class="hljs-string">"q_cylinder_z"</span>});
+        sim.setupGraph(<span class="hljs-string">"tau_rotation"</span>);
+        sim.setDT(<span class="hljs-number">0.002</span>, <span class="hljs-number">10</span>);
+        Thread myThread = <span class="hljs-keyword">new</span> Thread(sim);
+        myThread.start();
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>
+    </span>{
+        <span class="hljs-keyword">new</span> FlyballGovernorSimulation();
+    }
+}
+</code></pre>
+<p></details></p>
+<p><details>
+<summary>FlyballGovernorRobot</summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.flyballGovernor;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
+<span class="hljs-keyword">import</span> us.ihmc.graphicsDescription.appearance.YoAppearance;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.Axis;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.CylinderJoint;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.ExternalForcePoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Link;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.PinJoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.registry.YoVariableRegistry;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotController.RobotController;
+
+<span class="hljs-meta">@SuppressWarnings</span>(<span class="hljs-string">"unused"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlyballGovernorRobot</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Robot</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">RobotController</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> serialVersionUID = -<span class="hljs-number">2657468625455223170L</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L1 = <span class="hljs-number">0.30</span>, R1 = <span class="hljs-number">0.01</span>, M1 = <span class="hljs-number">0.1</span>, DAMPING1 = <span class="hljs-number">0.0004</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L2 = <span class="hljs-number">0.2</span>, R2 = <span class="hljs-number">0.005</span>, M2 = <span class="hljs-number">0.5</span>, SPHERE_R = <span class="hljs-number">0.03</span>, DAMPING2 = <span class="hljs-number">0.5</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L3 = <span class="hljs-number">0.1</span>, R3 = <span class="hljs-number">0.005</span>, M3 = <span class="hljs-number">0.1</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L4 = <span class="hljs-number">0.06</span>, R4 = <span class="hljs-number">0.03</span>, M4 = <span class="hljs-number">0.2</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx1 = <span class="hljs-number">0.5</span> * M1 * L1 * L1, Iyy1 = <span class="hljs-number">0.5</span> * M1 * L1 * L1, Izz1 = <span class="hljs-number">0.5</span> * M1 * R1 * R1;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R, Iyy2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R, Izz2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx3 = <span class="hljs-number">0.5</span> * M3 * L3 * L3, Iyy3 = <span class="hljs-number">0.5</span> * M3 * L3 * L3, Izz3 = <span class="hljs-number">0.5</span> * M3 * R3 * R3;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx4 = <span class="hljs-number">0.5</span> * M4 * L4 * L4, Iyy4 = <span class="hljs-number">0.5</span> * M4 * L4 * L4, Izz4 = <span class="hljs-number">0.5</span> * M4 * R4 * R4;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExternalForcePoint constraint1A, constraint1B, constraint2A, constraint2B;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FlyballGovernorRobot</span><span class="hljs-params">(String nameSuffix, FlyballGovernorCommonControlParameters controllerParameters, Vector3d baseWorldOffset)</span>
+    </span>{
+        <span class="hljs-keyword">super</span>(<span class="hljs-string">"FlyballGovernor"</span> + nameSuffix);
+        PinJoint rotation = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"rotation"</span>, baseWorldOffset, <span class="hljs-keyword">this</span>, Axis.Z);
+        rotation.setDamping(DAMPING1);
+        Link centerRod = centerRod();
+        rotation.setLink(centerRod);
+        <span class="hljs-keyword">this</span>.addRootJoint(rotation);
+        <span class="hljs-comment">// One of the flyballs</span>
+        PinJoint upperPivot1 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"upperPivot1"</span>, <span class="hljs-keyword">new</span> Vector3d(R1, <span class="hljs-number">0.0</span>, L1), <span class="hljs-keyword">this</span>, Axis.Y);
+        upperPivot1.setInitialState(-<span class="hljs-number">0.3</span>, <span class="hljs-number">0.0</span>);
+        upperPivot1.setDamping(DAMPING2);
+        upperPivot1.setLimitStops(-Math.PI / <span class="hljs-number">2.0</span>, -<span class="hljs-number">0.2</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);
+        Link flyBall1 = flyBallLink();
+        upperPivot1.setLink(flyBall1);
+        rotation.addJoint(upperPivot1);
+        PinJoint lowerPivot1 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"lowerPivot1"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -<span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span> * L2), <span class="hljs-keyword">this</span>, Axis.Y);
+        lowerPivot1.setInitialState(<span class="hljs-number">0.5</span>, <span class="hljs-number">0.0</span>);
+        Link loopLink1 = loopLink();
+        lowerPivot1.setLink(loopLink1);
+        upperPivot1.addJoint(lowerPivot1);
+        constraint1A = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint1A"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3), <span class="hljs-keyword">this</span>);
+        lowerPivot1.addExternalForcePoint(constraint1A);
+        <span class="hljs-comment">// The other flyball</span>
+        PinJoint upperPivot2 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"upperPivot2"</span>, <span class="hljs-keyword">new</span> Vector3d(-R1, <span class="hljs-number">0.0</span>, L1), <span class="hljs-keyword">this</span>, Axis.Y);
+        upperPivot2.setInitialState(<span class="hljs-number">0.3</span>, <span class="hljs-number">0.0</span>);
+        upperPivot2.setDamping(DAMPING2);
+        upperPivot2.setLimitStops(<span class="hljs-number">0.2</span>, Math.PI / <span class="hljs-number">2.0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);
+        Link flyBall2 = flyBallLink();
+        upperPivot2.setLink(flyBall2);
+        rotation.addJoint(upperPivot2);
+        PinJoint lowerPivot2 = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"lowerPivot2"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -<span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span> * L2), <span class="hljs-keyword">this</span>, Axis.Y);
+        lowerPivot2.setInitialState(-<span class="hljs-number">0.5</span>, <span class="hljs-number">0.0</span>);
+        Link loopLink2 = loopLink();
+        lowerPivot2.setLink(loopLink2);
+        upperPivot2.addJoint(lowerPivot2);
+        constraint2A = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint2A"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3), <span class="hljs-keyword">this</span>);
+        lowerPivot2.addExternalForcePoint(constraint2A);
+
+        <span class="hljs-comment">// The sliding Cylinder:</span>
+        CylinderJoint cylinderJoint = <span class="hljs-keyword">new</span> CylinderJoint(<span class="hljs-string">"cylinder_theta"</span>, <span class="hljs-string">"cylinder_z"</span>, baseWorldOffset, <span class="hljs-keyword">this</span>, Axis.Z);
+        cylinderJoint.setInitialState(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.05</span>, <span class="hljs-number">0.0</span>);
+        Link cylinderLink = cylinderLink();
+        cylinderJoint.setLink(cylinderLink);
+        <span class="hljs-keyword">this</span>.addRootJoint(cylinderJoint);
+        constraint1B = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint1B"</span>, <span class="hljs-keyword">new</span> Vector3d(R4, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>), <span class="hljs-keyword">this</span>);
+        constraint2B = <span class="hljs-keyword">new</span> ExternalForcePoint(<span class="hljs-string">"constraint2B"</span>, <span class="hljs-keyword">new</span> Vector3d(-R4, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>), <span class="hljs-keyword">this</span>);
+        cylinderJoint.addExternalForcePoint(constraint1B);
+        cylinderJoint.addExternalForcePoint(constraint2B);
+        <span class="hljs-keyword">this</span>.setController(<span class="hljs-keyword">this</span>);
+
+        k_feedback = controllerParameters.getK_feedback();
+        q_d_cylinder_z = controllerParameters.getQ_d_cylinder_z();
+        <span class="hljs-keyword">this</span>.initControl();
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint1A</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint1A;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint1B</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint1B;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint2A</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint2A;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint2B</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint2B;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">centerRod</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Center Rod"</span>);
+        ret.setMass(M1);
+        ret.setMomentOfInertia(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, Izz1);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, L1 / <span class="hljs-number">2.0</span>);
+
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.addCylinder(L1, R1, YoAppearance.Red());
+        ret.setLinkGraphics(linkGraphics);
+
+        <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">flyBallLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Flyball"</span>);
+        ret.setMass(M2);
+        ret.setMomentOfInertia(Ixx2, Iyy2, Izz2);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L2);
+
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L2);
+        linkGraphics.addCylinder(L2, R2);
+        linkGraphics.addSphere(SPHERE_R, YoAppearance.DarkGreen());
+        ret.setLinkGraphics(linkGraphics);
+
+        <span class="hljs-keyword">return</span> ret;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">loopLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Loop"</span>);
+        ret.setMass(M3);
+        ret.setMomentOfInertia(Ixx3, Iyy3, Izz3);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3 / <span class="hljs-number">2.0</span>);
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -L3);
+        linkGraphics.addCylinder(L3, R3);
+        ret.setLinkGraphics(linkGraphics);
+        <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Link <span class="hljs-title">cylinderLink</span><span class="hljs-params">()</span>
+    </span>{
+        Link ret = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"Cylinder Link"</span>);
+        ret.setMass(M4);
+        ret.setMomentOfInertia(Ixx4, Iyy4, Izz4);
+        ret.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, L4 / <span class="hljs-number">2.0</span>);
+        LinkGraphicsDescription linkGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+        linkGraphics.addCylinder(L4, R4, YoAppearance.DarkBlue());
+        linkGraphics.addCylinder(L4 / <span class="hljs-number">8.0</span>, <span class="hljs-number">1.1</span> * R4);
+        linkGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">7.0</span> / <span class="hljs-number">8.0</span> * L4);
+        linkGraphics.addCylinder(L4 / <span class="hljs-number">8.0</span>, <span class="hljs-number">1.1</span> * R4);
+        ret.setLinkGraphics(linkGraphics);
+        <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-keyword">private</span> DoubleYoVariable tau_rotation, q_cylinder_z, qd_cylinder_z;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoVariableRegistry registry = <span class="hljs-keyword">new</span> YoVariableRegistry(<span class="hljs-string">"FlyballGovernorController"</span>);
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable k_feedback, q_d_cylinder_z;
+    <span class="hljs-keyword">public</span> DoubleYoVariable[] getControlVars()
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DoubleYoVariable[] {k_feedback, q_d_cylinder_z};
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initControl</span><span class="hljs-params">()</span>
+    </span>{
+        tau_rotation = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"tau_rotation"</span>);
+        q_cylinder_z = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"q_cylinder_z"</span>);
+        qd_cylinder_z = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"qd_cylinder_z"</span>);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doControl</span><span class="hljs-params">()</span>
+    </span>{
+        tau_rotation.set(k_feedback.getDoubleValue() * (q_d_cylinder_z.getDoubleValue() - q_cylinder_z.getDoubleValue()));
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> YoVariableRegistry <span class="hljs-title">getYoVariableRegistry</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> registry;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span>
+    </span>{
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getDescription</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> getName();
+    }
+
+}
+</code></pre>
+<p></details></p>
+<p><details>
+<summary>FlyballGovernorSimpleClosedLoopConstraintController</summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.flyballGovernor;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Point3d;
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.referenceFrames.ReferenceFrame;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.ExternalForcePoint;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.registry.YoVariableRegistry;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotController.RobotController;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.math.frames.YoFramePoint;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.math.frames.YoFrameVector;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlyballGovernorSimpleClosedLoopConstraintController</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">RobotController</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoFramePoint position1A, position1B, position2A, position2B;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoFrameVector velocity1A, velocity1B, velocity2A, velocity2B;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoFrameVector force1A, force1B, force2A, force2B;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoVariableRegistry registry = <span class="hljs-keyword">new</span> YoVariableRegistry(getClass().getSimpleName());
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable constraintGain = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"constraintGain"</span>, registry);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable constraintDamp = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"constraintDamp"</span>, registry);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable positionErrorMagnitude1 = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"positionErrorMagnitude1"</span>, registry);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable positionErrorMagnitude2 = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"positionErrorMagnitude2"</span>, registry);
+
+    <span class="hljs-comment">// Temp variables:</span>
+    <span class="hljs-keyword">private</span> Point3d posA = <span class="hljs-keyword">new</span> Point3d();
+    <span class="hljs-keyword">private</span> Point3d posB = <span class="hljs-keyword">new</span> Point3d();
+    <span class="hljs-keyword">private</span> Vector3d velA = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-keyword">private</span> Vector3d velB = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-keyword">private</span> Vector3d springForceA = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-keyword">private</span> Vector3d dampingForceA = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-keyword">private</span> Vector3d newForceA = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-keyword">private</span> Vector3d newForceB = <span class="hljs-keyword">new</span> Vector3d();
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FlyballGovernorSimpleClosedLoopConstraintController</span><span class="hljs-params">(FlyballGovernorRobot robot)</span>
+    </span>{
+        ExternalForcePoint constraint1A = robot.getConstraint1A();
+        ExternalForcePoint constraint1B = robot.getConstraint1B();
+        ExternalForcePoint constraint2A = robot.getConstraint2A();
+        ExternalForcePoint constraint2B = robot.getConstraint2B();
+        position1A = constraint1A.getYoPosition();
+        position1B = constraint1B.getYoPosition();
+        position2A = constraint2A.getYoPosition();
+        position2B = constraint2B.getYoPosition();
+        velocity1A = constraint1A.getYoVelocity();
+        velocity1B = constraint1B.getYoVelocity();
+        velocity2A = constraint2A.getYoVelocity();
+        velocity2B = constraint2B.getYoVelocity();
+        force1A = constraint1A.getYoForce();
+        force1B = constraint1B.getYoForce();
+        force2A = constraint2A.getYoForce();
+        force2B = constraint2B.getYoForce();
+
+        initialize();
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span>
+    </span>{
+        constraintGain.set(<span class="hljs-number">10000.0</span>);
+        constraintDamp.set(<span class="hljs-number">15.0</span>);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doControl</span><span class="hljs-params">()</span>
+    </span>{
+        doConstraint(position1A, position1B, velocity1A, velocity1B, force1A, force1B, positionErrorMagnitude1);
+        doConstraint(position2A, position2B, velocity2A, velocity2B, force2A, force2B, positionErrorMagnitude2);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doConstraint</span><span class="hljs-params">(YoFramePoint positionA, YoFramePoint positionB, YoFrameVector velocityA, YoFrameVector velocityB,
+                              YoFrameVector forceA, YoFrameVector forceB, DoubleYoVariable positionErrorMagnitude)</span>
+    </span>{
+        positionA.get(posA);
+        positionB.get(posB);
+        velocityA.get(velA);
+        velocityB.get(velB);
+        springForceA.sub(posB, posA);
+        positionErrorMagnitude.set(springForceA.length());
+        springForceA.scale(constraintGain.getDoubleValue());
+        dampingForceA.sub(velB, velA);
+        dampingForceA.scale(constraintDamp.getDoubleValue());
+        newForceA.add(springForceA, dampingForceA);
+        newForceB.scale(-<span class="hljs-number">1.0</span>, newForceA);
+
+        forceA.set(newForceA);
+        forceB.set(newForceB);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> YoVariableRegistry <span class="hljs-title">getYoVariableRegistry</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> registry;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getDescription</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> getName();
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> registry.getName();
+    }
+}
+</code></pre>
+<p></details></p>
+<p><details>
+<summary>FlyballGovernorCommonControlParameters</summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.flyballGovernor;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.registry.YoVariableRegistry;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlyballGovernorCommonControlParameters</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoVariableRegistry registry = <span class="hljs-keyword">new</span> YoVariableRegistry(getClass().getSimpleName());
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable k_feedback = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"k_feedback"</span>, registry);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable q_d_cylinder_z = <span class="hljs-keyword">new</span> DoubleYoVariable(<span class="hljs-string">"q_d_cylinder_z"</span>, registry);
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FlyballGovernorCommonControlParameters</span><span class="hljs-params">()</span>
+    </span>{
+        initialize();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span>
+    </span>{
+        k_feedback.set(<span class="hljs-number">0.2</span>);
+        q_d_cylinder_z.set(<span class="hljs-number">0.1</span>);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> DoubleYoVariable <span class="hljs-title">getK_feedback</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> k_feedback;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> DoubleYoVariable <span class="hljs-title">getQ_d_cylinder_z</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> q_d_cylinder_z;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> YoVariableRegistry <span class="hljs-title">getYoVariableRegistry</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> registry;
+    }
+}
+</code></pre>
+<p></details></p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Mobile Simulation · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="### Create the class MobileSimulation"/><meta property="og:title" content="Mobile Simulation · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="### Create the class MobileSimulation"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Mobile Simulation</h1></header><article><div><span><h3><a class="anchor" aria-hidden="true" id="create-the-class-mobilesimulation"></a><a href="#create-the-class-mobilesimulation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create the class MobileSimulation</h3>
+<p>Fill it in as follows:</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.mobile;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSet;
+<span class="hljs-comment">/**
+ * A simulation of a child’s mobile toy that uses a tree structure of 21 gimbal
+ * joints (63 degrees of freedom total).
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MobileSimulation</span>
+</span>{
+   <span class="hljs-keyword">private</span> SimulationConstructionSet sim;
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MobileSimulation</span><span class="hljs-params">()</span>
+   </span>{
+      <span class="hljs-comment">// Create an instance of MobileRobot</span>
+      MobileRobot mobile = <span class="hljs-keyword">new</span> MobileRobot();
+      <span class="hljs-comment">// Instantiate a SCS object using the MobileRobot object reference</span>
+      sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(mobile);
+      sim.setGroundVisible(<span class="hljs-keyword">false</span>);
+      sim.setCameraTracking(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>);
+      sim.setCameraDolly(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>);
+      <span class="hljs-comment">// set camera to a convenient viewing angle</span>
+      sim.setCameraPosition(<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.5</span>);
+      sim.setCameraFix(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.8</span>);
+      sim.setCameraTrackingVars(<span class="hljs-string">"ef_track00_x"</span>, <span class="hljs-string">"ef_track00_y"</span>, <span class="hljs-string">"ef_track00_z"</span>);
+      sim.setDT(<span class="hljs-number">0.02</span>, <span class="hljs-number">1</span>);
+      Thread myThread = <span class="hljs-keyword">new</span> Thread(sim);
+      myThread.start();
+   }
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>
+   </span>{
+      <span class="hljs-keyword">new</span> MobileSimulation();
+   }
+}
+</code></pre>
+<p>Note that the integration time step is set to 0.02 seconds: <code>sim.setDT(0.02, 1);</code></p>
+<p>This is a fairly large time step, but in this case it is possible since there are no high-frequency interactions in the system. In general, to set the integration time step, experiment with different values. As the time step gets higher, you will see different behavior due to numerical instabilities. Choose a time step which is low enough that making it any lower does not change the outcome of the simulation.</p>
+<p>The second parameter to setDT is 1, meaning that every integration step will be recorded.</p>
+<p>Note that camera tracking and dollying are off and ground is set to invisible.</p>
+<p>Instead of tracking and dollying the camera position and fix are set to get a good view of the mobile:</p>
+<p><code>sim.setGroundVisible(false);</code>  <br>
+<code>sim.setCameraTracking(false,false,false,false);</code>  <br>
+<code>sim.setCameraDolly(false,false,false,false);</code>  <br>
+<code>sim.setCameraPosition(1.0,1.0,0.5);</code>  <br>
+<code>sim.setCameraFix(0.0,0.0,0.8);</code></p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

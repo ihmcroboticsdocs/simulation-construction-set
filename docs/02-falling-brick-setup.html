@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Create a New Class FallingBrickSimulation · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="### Create a New Java Class Named FallingBrickSimulation"/><meta property="og:title" content="Create a New Class FallingBrickSimulation · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="### Create a New Java Class Named FallingBrickSimulation"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Create a New Class FallingBrickSimulation</h1></header><article><div><span><h3><a class="anchor" aria-hidden="true" id="create-a-new-java-class-named-fallingbricksimulation"></a><a href="#create-a-new-java-class-named-fallingbricksimulation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create a New Java Class Named FallingBrickSimulation</h3>
+<p>Fill the class with the following:</p>
+<p>These are just the initial variables and environment setup.</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.fallingBrick  ;
+<span class="hljs-keyword">import</span> us.ihmc.graphicsDescription.appearance.YoAppearance;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSet;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.examples.FallingBrickRobot;
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FallingBrickSimulation</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">enum</span> GROUND_APPEARANCE
+    {
+        EARTH, STONE, ALUMINUM
+    }
+    SimulationConstructionSet sim;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FallingBrickSimulation</span><span class="hljs-params">()</span>
+    </span>{
+        GROUND_APPEARANCE appearance = GROUND_APPEARANCE.EARTH;
+        FallingBrickRobot fallingBrick = <span class="hljs-keyword">new</span> FallingBrickRobot();
+        sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(fallingBrick, <span class="hljs-keyword">new</span> SimulationConstructionSetParameters(<span class="hljs-number">16342</span>));
+        sim.setDT(<span class="hljs-number">0.001</span>, <span class="hljs-number">20</span>);
+        sim.setCameraPosition(-<span class="hljs-number">1.5</span>, -<span class="hljs-number">2.5</span>, <span class="hljs-number">0.5</span>);
+        sim.setCameraFix(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.4</span>);
+        sim.setCameraTracking(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>);
+        sim.setCameraDolly(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>);
+        <span class="hljs-comment">// Set up some graphs:</span>
+        sim.setupGraph(<span class="hljs-string">"q_z"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_x"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_y"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_z"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_wx"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_wy"</span>);
+        sim.setupEntryBox(<span class="hljs-string">"qd_wz"</span>);
+        <span class="hljs-keyword">switch</span> (appearance)
+        {
+            <span class="hljs-keyword">case</span> EARTH:
+                sim.setGroundAppearance(YoAppearance.EarthTexture());
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> STONE:
+                sim.setGroundAppearance(YoAppearance.StoneTexture());
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> ALUMINUM:
+                sim.setGroundAppearance(YoAppearance.AluminumMaterial());
+                <span class="hljs-keyword">break</span>;
+        }
+        Thread myThread = <span class="hljs-keyword">new</span> Thread(sim);
+        myThread.start();
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>
+    </span>{
+        <span class="hljs-keyword">new</span> FallingBrickSimulation();
+    }
+}
+
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

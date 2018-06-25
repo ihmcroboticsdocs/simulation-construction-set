@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>SimplePendulumRobot.java · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Now that you have the simulation class up and running it&#x27;s time to add a robot.  Robots in SCS extend the `us.ihmc.simulationconstructionset.Robot` class and are made up of joints and links. The class Robot is included in Simulation Construction Set and has built in graphics, dynamics, etc. Extending the class is an easy way to make a new type of robot."/><meta property="og:title" content="SimplePendulumRobot.java · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="Now that you have the simulation class up and running it&#x27;s time to add a robot.  Robots in SCS extend the `us.ihmc.simulationconstructionset.Robot` class and are made up of joints and links. The class Robot is included in Simulation Construction Set and has built in graphics, dynamics, etc. Extending the class is an easy way to make a new type of robot."/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>SimplePendulumRobot.java</h1></header><article><div><span><p>Now that you have the simulation class up and running it's time to add a robot.  Robots in SCS extend the <code>us.ihmc.simulationconstructionset.Robot</code> class and are made up of joints and links. The class Robot is included in Simulation Construction Set and has built in graphics, dynamics, etc. Extending the class is an easy way to make a new type of robot.</p>
+<p>To start with, we will create one of the simplest robots possible: a Pendulum.</p>
+<h3><a class="anchor" aria-hidden="true" id="description-of-the-robot"></a><a href="#description-of-the-robot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Description of the robot</h3>
+<p><em>&quot;A pendulum is a weight suspended from a pivot so that it can swing freely.
+When a pendulum is displaced sideways from its resting, equilibrium position, it is subject to a restoring force due to gravity that will accelerate it back toward the equilibrium position.
+When released, the restoring force combined with the pendulum's mass causes it to oscillate about the equilibrium position, swinging back and forth.
+The time for one complete cycle, a left swing and a right swing, is called the period. The period depends on the length of the pendulum and also to a slight degree on the amplitude, the width of the pendulum's swing.&quot;</em>  <br>
+Source: <a href="https://en.wikipedia.org/wiki/Pendulum">Wikipedia</a></p>
+<p><img src="/img/scs-tutorials/simple-pendulum/pendulum.png" alt="pendulum"></p>
+<p>In order to build this pendulum for our simulation, we will use two SCS objects: one <strong>Link</strong> and one <strong>Joint</strong>.</p>
+<h4><a class="anchor" aria-hidden="true" id="links-and-joints"></a><a href="#links-and-joints" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Links and Joints</h4>
+<p>The <strong>Link</strong> object describes the physical properties (<em>Mass</em>, <em>Center of Mass</em> offset vector, <em>Moment of Intertia</em>, ...) of a rigid body.</p>
+<p>The <strong>Joint</strong> object is used to model the connections between links. Joints describes the motion constraint between Links and the physics simulation.
+SCS provides a variety of Joints used to build robots such as: FloatingJoint, FreeJoint, FloatingPlanarJoint, PinJoint, SliderJoint...</p>
+<p>To represent the pendulum's pivot, we will use a <strong>PinJoint</strong> which is a rotational joint with a single degree of freedom. Pin joints allow rotation around a single axis specified upon creation (the Y-axis in this case).</p>
+<h3><a class="anchor" aria-hidden="true" id="1-create-the-simplependulumrobot-class"></a><a href="#1-create-the-simplependulumrobot-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Create the SimplePendulumRobot Class</h3>
+<p>Create a new class in the <code>us.ihmc.exampleSimulations.simplePendulum</code> package called <code>SimplePendulumRobot</code> that extends <code>us.ihmc.simulationconstructionset.Robot</code>.</p>
+<p>Your class should look like this:</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.simplePendulum;
+
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Robot</span> // <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-title">inherits</span> <span class="hljs-title">some</span> <span class="hljs-title">properties</span> <span class="hljs-title">and</span> <span class="hljs-title">methods</span> <span class="hljs-title">from</span> <span class="hljs-title">Robot</span> <span class="hljs-title">class</span>
+</span>{
+
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="2-define-the-pendulum-constants-and-initial-values"></a><a href="#2-define-the-pendulum-constants-and-initial-values" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Define the Pendulum Constants and Initial Values:</h3>
+<p><details open>
+<summary> Constants and Initial Values </summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Robot</span> // <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-title">inherits</span> <span class="hljs-title">some</span> <span class="hljs-title">properties</span> <span class="hljs-title">and</span> <span class="hljs-title">methods</span> <span class="hljs-title">from</span> <span class="hljs-title">Robot</span> <span class="hljs-title">class</span>
+</span>{
+   <span class="hljs-comment">/*
+     Pendulum constants and initial values
+      - Lengths are in meters (m)
+      - Masses are in kilograms (kg)
+   */</span>
+   
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> FULCRUM_RADIUS = <span class="hljs-number">0.02</span>;
+   
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_LENGTH = <span class="hljs-number">1.0</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_RADIUS = <span class="hljs-number">0.01</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_MASS = <span class="hljs-number">0.01</span>;
+
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> BALL_RADIUS = <span class="hljs-number">0.05</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> BALL_MASS = <span class="hljs-number">1.0</span>;
+
+   <span class="hljs-comment">// I = mrˆ2 pendulum's resistance to changes to its rotation in kg.mˆ2</span>
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y = ROD_LENGTH * ROD_LENGTH * BALL_MASS; 
+
+   <span class="hljs-comment">/*
+      Initial state of the pendulum
+   */</span>
+
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialPositionDegrees = <span class="hljs-number">90.0</span>;
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialPositionRadians = fulcrumInitialPositionDegrees * Math.PI / <span class="hljs-number">180.0</span>;
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialVelocity = <span class="hljs-number">0.0</span>;
+</code></pre>
+<p></details></p>
+<p>*<strong>Lengths are expressed in meters (m), masses in kilograms (kg)</strong></p>
+<h3><a class="anchor" aria-hidden="true" id="3-include-required-imports"></a><a href="#3-include-required-imports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Include Required Imports:</h3>
+<p>Before continuing, make sure you have added the following classes to your imports:<br>
+<details open>
+<summary> Required Imports </summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">import</span> us.ihmc.graphicsDescription.appearance.YoAppearance;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.Axis;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Link;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.PinJoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+</code></pre>
+<p></details></p>
+<h3><a class="anchor" aria-hidden="true" id="4-define-the-constructor-of-the-robot"></a><a href="#4-define-the-constructor-of-the-robot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Define the Constructor of the Robot:</h3>
+<p><details open>
+<summary> Constructor: SimplePendulumRobot() </summary></p>
+<pre><code class="hljs css languages- java">   <span class="hljs-comment">/*
+       Constructor creates an instance of the class SimplePendulumRobot
+   */</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SimplePendulumRobot</span><span class="hljs-params">()</span>
+   </span>{
+      <span class="hljs-comment">// a. Call parent class "Robot" constructor. The string "SimplePendulum" will be the name of the robot.  </span>
+      <span class="hljs-keyword">super</span>(<span class="hljs-string">"pendulum"</span>);
+   }
+</code></pre>
+<p></details></p>
+<ul>
+<li><strong>Call Parent Constructor:</strong>  <br>
+<code>super(&quot;pendulum&quot;);</code> creates an instance of the class Robot named &quot;pendulum&quot; in the SCS system.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="5-create-the-pendulum-s-rod-using-a-link"></a><a href="#5-create-the-pendulum-s-rod-using-a-link" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Create the Pendulum's Rod Using a Link:</h3>
+<p>Add the following to the end of the constructor:
+<details open>
+<summary> Create pendulumLink </summary></p>
+<pre><code class="hljs css languages- java">      <span class="hljs-comment">// b. Create a link</span>
+      Link pendulumLink = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"PendulumLink"</span>);
+      pendulumLink.setMass(BALL_MASS);
+      pendulumLink.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -ROD_LENGTH);
+      pendulumLink.setMomentOfInertia(<span class="hljs-number">0.0</span>, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, <span class="hljs-number">0.0</span>);
+</code></pre>
+<p></details></p>
+<ul>
+<li><p><strong>Create a new Link:</strong>  <br>
+<code>Link pendulumLink = new Link(&quot;PendulumLink&quot;);</code>  <br>
+This line creates a new Link named &quot;PendulumLink&quot;.</p></li>
+<li><p><strong>Set its physical properties:</strong>  <br>
+<code>pendulumLink.setMass(BALL_MASS);</code>  <br>
+This line sets the mass of the link to 1.0 kg.<br>
+<code>pendulumLink.setComOffset(0.0, 0.0, -ROD_LENGTH);</code>  <br>
+This line sets the center of mass offset of the link to be located at the tip of the rod which is 1.0m opposite the pivot joint.<br>
+<code>pendulumLink.setMomentOfInertia(0.0, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, 0.0);</code>  <br>
+This line sets the moment of inertia about the Y axis. Note that the moment of inertia is defined about the center of mass.
+Therefore, if the moment of inertia is set to zero, the link will be a point mass.</p></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="6-create-the-pendulum-s-pivot-or-fulcrum-using-a-pinjoint"></a><a href="#6-create-the-pendulum-s-pivot-or-fulcrum-using-a-pinjoint" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Create the Pendulum's Pivot or fulcrum Using a PinJoint:</h3>
+<p>Add the following to the end of the constructor:
+<details open>
+<summary> Create: fulcrumPinJoint </summary></p>
+<pre><code class="hljs css languages- java">      <span class="hljs-comment">// c. Create a pin joint attached to the link</span>
+      PinJoint fulcrumPinJoint = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"FulcrumPinJoint"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.5</span>), <span class="hljs-keyword">this</span>, Axis.Y);
+      fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);
+      fulcrumPinJoint.setDamping(<span class="hljs-number">0.3</span>);
+      fulcrumPinJoint.setLink(pendulumLink); 
+      
+      <span class="hljs-comment">// d. Add fulcrumPinJoint as the root joint of the robot</span>
+      <span class="hljs-keyword">this</span>.addRootJoint(fulcrumPinJoint);
+</code></pre>
+<p></details></p>
+<ul>
+<li><p><strong>Create a pin joint:</strong>   <br>
+<code>PinJoint fulcrumPinJoint = new PinJoint(&quot;FulcrumPinJoint&quot;, new Vector3d(0.0, 0.0, 1.5), this, Axis.Y);</code>   <br>
+The first parameter &quot;FulcrumPinJoint&quot; is the name of the joint and will be used in all the variables associated with that joint.<br>
+The second parameter &quot;new Vector3d(0.0, 0.0, 1.5)&quot; defines the offset of this joint from the previous joint.<br>
+Since we want to position the fulcrum of the pendulum at a height of 1.5 meters above the ground, the default vector (0.0, 0.0, 1.5) will be used.<br>
+The third parameter &quot;this&quot; refers to the robot itself. The final parameter &quot;Axis.Y&quot; defines the axis of rotation for this pin joint.</p></li>
+<li><p><strong>Set some properties for this joint:</strong>  <br>
+<code>fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);</code>  <br>
+Initial state of the pin joint. The pendulum will start its course from an horizontal position with no initial speed.<br>
+<code>fulcrumPinJoint.setDamping(0.3);</code>  <br>
+Add some damping to force the pendulum ball to converge faster to equilibrium position.</p></li>
+<li><p><strong>Finally, attach a Link to this joint:</strong>   <br>
+<code>fulcrumPinJoint.setLink(pendulumLink);</code>  <br>
+Set the link created previously as the link for this joint.</p></li>
+<li><p><strong>Add a RootJoint to the robot:</strong>  <br>
+<code>this.addRootJoint(fulcrumPinJoint);</code>  <br>
+This line adds <code>fulcrumPinJoint</code> as a rootJoint of the robot.
+In order to be part of a robot, a joint must either be added as a root joint, or be attached to a parent joint.
+This ensures the tree structure (forest structure if there are multiple root joints) of the robot.</p></li>
+</ul>
+<p><img src="/img/attention-40.png" alt="note"> <strong>Note on reference frames:</strong>
+<em>In SCS, like the URDF robot description file format, when a joint is created its reference frame is calculated relative to the previous joint's reference frame.
+One exception is that joints added as <strong>root joints</strong> of a robot are positioned relative to the world reference frame. The reference frame of each <code>Link</code> attached to a <code>Joint</code> is identical to the reference frame of the <code>Joint</code>.</em></p>
+<h3><a class="anchor" aria-hidden="true" id="7-create-the-3d-graphics-which-represent-the-link-and-joint-in-scs"></a><a href="#7-create-the-3d-graphics-which-represent-the-link-and-joint-in-scs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Create the 3D Graphics which Represent the Link and Joint in SCS</h3>
+<p>Add the following to the end of the constructor:
+<details open>
+<summary> 3D Object Creation </summary></p>
+<pre><code class="hljs css languages- java">      <span class="hljs-comment">// e. Add 3D objects</span>
+      LinkGraphicsDescription pendulumGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+      pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());
+      pendulumGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -ROD_LENGTH);
+      pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());
+      pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());
+      pendulumLink.setLinkGraphics(pendulumGraphics);
+</code></pre>
+<p></details></p>
+<ul>
+<li><p><strong>Create a new LinkGraphicsDescription:</strong>  <br>
+<code>LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();</code>  <br>
+This line creates a new instance of the LinkGraphicsDescription class which, once attached to its <code>LinkGraphics</code>, is used to visually represent links in the SCS 3D view.</p></li>
+<li><p><strong>Add the pivot:</strong>  <br>
+<code>pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());</code>  <br>
+Here we add a purple sphere 3D object to <code>pendulumGraphics</code>. Since no transformation has been applied to this graphic component the sphere's position is (0.0, 0.0, 0.0). This is used represent the pivot/fulcrum of the pendulum.</p></li>
+<li><p><strong>Add the rod:</strong>  <br>
+<code>pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);</code>  <br>
+Translates from the current position by the specified distances. Graphic components added after translation will appear in the new location. The coordinate system for these translations is based on those that preceded it.<br>
+<code>pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());</code>  <br>
+Adds a 1m long black cylinder representing the rod.</p></li>
+<li><p><strong>Add the ball:</strong>  <br>
+<code>pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());</code>  <br>
+Adds a yellow sphere representing the ball at the end of the rod.</p></li>
+<li><p><strong>Attach the LinkGraphicsDescription to its Link:</strong>  <br>
+<code>pendulumLink.setLinkGraphics(pendulumGraphics);</code>  <br>
+This line associates our <code>pendulumGraphics</code> object with the <code>pendulumLink</code> object and in doing so, translates and rotate the graphic components to be in the same frame of reference as the <code>pendulumLink</code>.</p></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="8-add-the-robot-to-the-simulation"></a><a href="#8-add-the-robot-to-the-simulation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Add the Robot to the Simulation</h3>
+<p>Now that you have a robot class, it needs to be instantiated in the simulation class and added to SCS.</p>
+<p>In the <code>SimplePendulumSimulation</code> class constructor, replace this line</p>
+<pre><code class="hljs css languages- java">      sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(parameters);
+</code></pre>
+<p>with</p>
+<pre><code class="hljs css languages- java">      SimplePendulumRobot robot = <span class="hljs-keyword">new</span> SimplePendulumRobot();
+    
+      sim = <span class="hljs-keyword">new</span> SimulationConstructionSet(robot, parameters);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="full-code-for-the-class"></a><a href="#full-code-for-the-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full code for the class:</h3>
+<p><details>
+<summary> Simple Pendulum Robot </summary></p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.simplePendulum;
+
+<span class="hljs-keyword">import</span> us.ihmc.graphicsDescription.appearance.YoAppearance;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.Axis;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Link;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.PinJoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Robot</span> // <span class="hljs-title">SimplePendulumRobot</span> <span class="hljs-title">inherits</span> <span class="hljs-title">some</span> <span class="hljs-title">properties</span> <span class="hljs-title">and</span> <span class="hljs-title">methods</span> <span class="hljs-title">from</span> <span class="hljs-title">Robot</span> <span class="hljs-title">class</span>
+</span>{
+   <span class="hljs-comment">/*
+     Pendulum constants and initial values
+      - Lengths are in meters (m)
+      - Masses are in kilograms (kg)
+   */</span>
+
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> FULCRUM_RADIUS = <span class="hljs-number">0.02</span>;
+
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_LENGTH = <span class="hljs-number">1.0</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_RADIUS = <span class="hljs-number">0.01</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> ROD_MASS = <span class="hljs-number">0.01</span>;
+
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> BALL_RADIUS = <span class="hljs-number">0.05</span>;
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> BALL_MASS = <span class="hljs-number">1.0</span>;
+
+   <span class="hljs-comment">// I = mrˆ2 pendulum's resistance to changes to its rotation in kg.mˆ2</span>
+   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y = ROD_LENGTH * ROD_LENGTH * BALL_MASS;
+
+   <span class="hljs-comment">/*
+      Initial state of the pendulum
+   */</span>
+
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialPositionDegrees = <span class="hljs-number">90.0</span>;
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialPositionRadians = fulcrumInitialPositionDegrees * Math.PI / <span class="hljs-number">180.0</span>;
+   <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> fulcrumInitialVelocity = <span class="hljs-number">0.0</span>;
+
+   <span class="hljs-comment">/*
+       Constructor creates an instance of the class SimplePendulumRobot
+   */</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SimplePendulumRobot</span><span class="hljs-params">()</span>
+   </span>{
+      <span class="hljs-comment">// a. Call parent class "Robot" constructor. The string "SimplePendulum" will be the name of the robot.</span>
+      <span class="hljs-keyword">super</span>(<span class="hljs-string">"SimplePendulum"</span>);
+
+      <span class="hljs-comment">// b. Create a link</span>
+      Link pendulumLink = <span class="hljs-keyword">new</span> Link(<span class="hljs-string">"PendulumLink"</span>);
+      pendulumLink.setMass(BALL_MASS);
+      pendulumLink.setComOffset(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -ROD_LENGTH);
+      pendulumLink.setMomentOfInertia(<span class="hljs-number">0.0</span>, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, <span class="hljs-number">0.0</span>);
+
+      <span class="hljs-comment">// c. Create a pin joint attached to the link</span>
+      PinJoint fulcrumPinJoint = <span class="hljs-keyword">new</span> PinJoint(<span class="hljs-string">"FulcrumPinJoint"</span>, <span class="hljs-keyword">new</span> Vector3d(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.5</span>), <span class="hljs-keyword">this</span>, Axis.Y);
+      fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);
+      fulcrumPinJoint.setDamping(<span class="hljs-number">0.3</span>);
+      fulcrumPinJoint.setLink(pendulumLink);
+
+      <span class="hljs-comment">// d. Add fulcrumPinJoint as the root joint of the robot</span>
+      <span class="hljs-keyword">this</span>.addRootJoint(fulcrumPinJoint);
+
+      <span class="hljs-comment">// e. Add 3D objects</span>
+      LinkGraphicsDescription pendulumGraphics = <span class="hljs-keyword">new</span> LinkGraphicsDescription();
+      pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());
+      pendulumGraphics.translate(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, -ROD_LENGTH);
+      pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());
+      pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());
+      pendulumLink.setLinkGraphics(pendulumGraphics);
+   }
+}
+</code></pre>
+<p></details></p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

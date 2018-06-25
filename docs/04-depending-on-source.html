@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Depending Directly on the Source · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="For the IHMCOpenRoboticsSoftware and [ihmc-build](https://github.com/ihmcrobotics/ihmc-build) to work correctly when depending directly on the source, the Gradle project hierarchy needs to take a particular form. Let&#x27;s assume you have a directory structure such as:"/><meta property="og:title" content="Depending Directly on the Source · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="For the IHMCOpenRoboticsSoftware and [ihmc-build](https://github.com/ihmcrobotics/ihmc-build) to work correctly when depending directly on the source, the Gradle project hierarchy needs to take a particular form. Let&#x27;s assume you have a directory structure such as:"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Depending Directly on the Source</h1></header><article><div><span><p>For the IHMCOpenRoboticsSoftware and <a href="https://github.com/ihmcrobotics/ihmc-build">ihmc-build</a> to work correctly when depending directly on the source, the Gradle project hierarchy needs to take a particular form. Let's assume you have a directory structure such as:</p>
+<pre><code class="hljs">.&lt;your Gradle root project&gt;
+├── build.gradle
+├── settings.gradle
+├── ProjectA
+├── ProjectB
+├── IHMCOpenRoboticsSoftware
+│   └── Acsell
+│   └── Atlas
+│   └── CommonWalkingControlModules
+├── ProjectC
+└── ...
+</code></pre>
+<p>You will need to modify the <strong>root project</strong> <code>settings.gradle</code> to set up your project hierarchy correctly. The important thing is that you will need both <code>:IHMCOpenRoboticsSoftware</code> as well as the various <code>:IHMCOpenRoboticsSoftware:&lt;Sub Project&gt;</code> items in the Gradle hierarchy, even though IHMCOpenRoboticsSoftware doesn't contain any of its own Java source. This can be tedious to set up by hand, so we usually write our settings.gradle to do some naive dynamic generation of dependencies.</p>
+<p>An example <code>settings.gradle</code> similar to what our developers use could look like the following:</p>
+<pre><code class="hljs css languages- groovy">rootProject.name = <span class="hljs-string">'_Foo'</span> <span class="hljs-comment">// Your root project name goes here</span>
+
+<span class="hljs-keyword">def</span> codeDir = rootProject.projectDir
+
+<span class="hljs-keyword">def</span> isGradleProjectFilter = <span class="hljs-keyword">new</span> FilenameFilter() {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">boolean</span> accept(File dir, String name) {
+        File f = <span class="hljs-keyword">new</span> File(dir, name).getCanonicalFile();
+        <span class="hljs-keyword">return</span> f.isDirectory() &amp;&amp; <span class="hljs-keyword">new</span> File(f, <span class="hljs-string">"build.gradle"</span>).exists();
+    }
+}
+
+codeDir.list(isGradleProjectFilter).each { mainProject -&gt;
+    include <span class="hljs-string">"${mainProject}"</span>
+
+    project(<span class="hljs-string">":${mainProject}"</span>).projectDir.list(isGradleProjectFilter).each { subProject -&gt;
+        include <span class="hljs-string">"${mainProject}:${subProject}"</span>
+    }
+}
+</code></pre>
+<p>If this is set up correctly, you can either apply the <code>ihmc-build</code> plugin from the <a href="https://plugins.gradle.org/plugin/us.ihmc.gradle.ihmc-build">Plugin portal</a> and use the dependency resolver methods exposed by the build extensions, or you can manually identify dependencies on projects using the normal Gradle syntax for project dependencies. A sample build.gradle dependency block:</p>
+<pre><code class="hljs css languages- groovy">dependencies {
+  compile project(<span class="hljs-string">':IHMCOpenRoboticsSoftware:IHMCJavaToolkit'</span>) <span class="hljs-comment">// normal Gradle way of doing things</span>
+}
+
+<span class="hljs-comment">/* OR */</span>
+
+dependencies {
+  compile ihmc.getProjectDependency(<span class="hljs-string">':IHMCJavaToolkit'</span>) <span class="hljs-comment">// ihmc-build way of doing things</span>
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>

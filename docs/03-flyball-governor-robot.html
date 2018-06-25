@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>FlyballGovernorRobot Class · Simulation Construction Set</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="### Create another class called FlyballGovernorRobot"/><meta property="og:title" content="FlyballGovernorRobot Class · Simulation Construction Set"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ihmcroboticsdocs.github.io/simulation-construction-set/index.html"/><meta property="og:description" content="### Create another class called FlyballGovernorRobot"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/simulation-construction-set/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/simulation-construction-set/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/simulation-construction-set/"><img class="logo" src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set"/><h2 class="headerTitleWithLogo">Simulation Construction Set</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://ihmcroboticsdocs.github.io" target="_self">IHMC Home</a></li><li class=""><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html" target="_self">All IHMC Docs</a></li><li class=""><a href="http://robots.ihmc.us/" target="_self">About IHMC</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>FlyballGovernorRobot Class</h1></header><article><div><span><h3><a class="anchor" aria-hidden="true" id="create-another-class-called-flyballgovernorrobot"></a><a href="#create-another-class-called-flyballgovernorrobot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create another class called FlyballGovernorRobot</h3>
+<p>Fill the class with the following:<br>
+This class simply creates the initControl and doControl methods and declares initial variables that can be easily changed later on.</p>
+<pre><code class="hljs css languages- java"><span class="hljs-keyword">package</span> us.ihmc.exampleSimulations.flyballGovernor;
+
+<span class="hljs-keyword">import</span> javax.vecmath.Vector3d;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
+<span class="hljs-keyword">import</span> us.ihmc.graphicsDescription.appearance.YoAppearance;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.Axis;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.CylinderJoint;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.ExternalForcePoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Link;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.PinJoint;
+<span class="hljs-keyword">import</span> us.ihmc.simulationconstructionset.Robot;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.dataStructures.registry.YoVariableRegistry;
+<span class="hljs-keyword">import</span> us.ihmc.robotics.robotController.RobotController;
+
+<span class="hljs-meta">@SuppressWarnings</span>(<span class="hljs-string">"unused"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FlyballGovernorRobot</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Robot</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">RobotController</span>
+</span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> serialVersionUID = -<span class="hljs-number">2657468625455223170L</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L1 = <span class="hljs-number">0.30</span>, R1 = <span class="hljs-number">0.01</span>, M1 = <span class="hljs-number">0.1</span>, DAMPING1 = <span class="hljs-number">0.0004</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L2 = <span class="hljs-number">0.2</span>, R2 = <span class="hljs-number">0.005</span>, M2 = <span class="hljs-number">0.5</span>, SPHERE_R = <span class="hljs-number">0.03</span>, DAMPING2 = <span class="hljs-number">0.5</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L3 = <span class="hljs-number">0.1</span>, R3 = <span class="hljs-number">0.005</span>, M3 = <span class="hljs-number">0.1</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> L4 = <span class="hljs-number">0.06</span>, R4 = <span class="hljs-number">0.03</span>, M4 = <span class="hljs-number">0.2</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx1 = <span class="hljs-number">0.5</span> * M1 * L1 * L1, Iyy1 = <span class="hljs-number">0.5</span> * M1 * L1 * L1, Izz1 = <span class="hljs-number">0.5</span> * M1 * R1 * R1;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R, Iyy2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R, Izz2 = <span class="hljs-number">0.5</span> * M2 * SPHERE_R * SPHERE_R;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx3 = <span class="hljs-number">0.5</span> * M3 * L3 * L3, Iyy3 = <span class="hljs-number">0.5</span> * M3 * L3 * L3, Izz3 = <span class="hljs-number">0.5</span> * M3 * R3 * R3;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> Ixx4 = <span class="hljs-number">0.5</span> * M4 * L4 * L4, Iyy4 = <span class="hljs-number">0.5</span> * M4 * L4 * L4, Izz4 = <span class="hljs-number">0.5</span> * M4 * R4 * R4;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExternalForcePoint constraint1A, constraint1B, constraint2A, constraint2B;
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint1A</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint1A;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint1B</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint1B;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint2A</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint2A;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ExternalForcePoint <span class="hljs-title">getConstraint2B</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> constraint2B;
+    }
+    <span class="hljs-keyword">private</span> DoubleYoVariable tau_rotation, q_cylinder_z, qd_cylinder_z;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> YoVariableRegistry registry = <span class="hljs-keyword">new</span> YoVariableRegistry(<span class="hljs-string">"FlyballGovernorController"</span>);
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DoubleYoVariable k_feedback, q_d_cylinder_z;
+    <span class="hljs-keyword">public</span> DoubleYoVariable[] getControlVars()
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DoubleYoVariable[] {k_feedback, q_d_cylinder_z};
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initControl</span><span class="hljs-params">()</span>
+    </span>{
+        tau_rotation = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"tau_rotation"</span>);
+        q_cylinder_z = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"q_cylinder_z"</span>);
+        qd_cylinder_z = (DoubleYoVariable)<span class="hljs-keyword">this</span>.getVariable(<span class="hljs-string">"qd_cylinder_z"</span>);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doControl</span><span class="hljs-params">()</span>
+    </span>{
+        tau_rotation.set(k_feedback.getDoubleValue() * (q_d_cylinder_z.getDoubleValue() - q_cylinder_z.getDoubleValue()));
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> YoVariableRegistry <span class="hljs-title">getYoVariableRegistry</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> registry;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span>
+    </span>{
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getDescription</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> getName();
+    }
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>
