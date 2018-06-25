@@ -1,7 +1,5 @@
 ---
-
 title: Adding to the GUI
-
 ---
 
 ```java

@@ -1,7 +1,5 @@
 ---
-
 title: Run the Simulation
-
 ---
 
 
@@ -35,10 +33,10 @@ title: Run the Simulation
    
    Try testing this method out on some of your already created shapes.  Notice how they are effected.
    
-   For more information you can look at the [LinkGraphicsDescription API Page].
+   For more information you can look at the [LinkGraphicsDescription API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-links-constructors-and-methods.html) Page.
    
 ### 5. Try creating some shapes with different appearances
-   To change the appearance of some of the shapes take a look at the [YoAppearance Utility API].
+   To change the appearance of some of the shapes take a look at the [YoAppearance Utility API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/04-yo-appearance-api.html).
   
    
 ### 6. Try experimenting to make an object, such as a snowman, out of the shapes.
@@ -117,6 +115,3 @@ public class LinkExamplesSimulation
 }
 ```
 </details>
-   
-   [YoAppearance Utility API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/04-yo-appearance-api.html)
-   [LinkGraphicsDescription API Page](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-links-constructors-and-methods.html)

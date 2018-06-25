@@ -1,7 +1,5 @@
 ---
-
 title: Creating Links
-
 ---
 
 In this tutorial we will create various shapes and add them to a link.
@@ -12,7 +10,7 @@ The next figure shows eleven different shapes, each with a coordinate system at 
 *Eleven example shapes. Coordinate systems are located at the origin of each shape.*
 
 ### 1. Create a new package with the name linkExamples
-  This should have the same folder structure that you used in the [Pendulum Example].
+  This should have the same folder structure that you used in the Pendulum Example.
   Your new `linkExamples` package should be within your `us.ihmc.exampleSimulations` package. 
   
 ### 2. Add the class LinkExamplesSimulation 
@@ -274,4 +272,4 @@ public class LinkExamplesSimulation
 }
 ```
 </details>
-   [Pendulum Example]: /documentation/20-scs/00-tutorials/02-creating-a-new-simulation
+

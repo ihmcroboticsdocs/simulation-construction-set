@@ -1,7 +1,5 @@
 ---
-
 title: YoAppearance helper API
-
 ---
 
 Table 4 lists the methods in the YoAppearance helper API. To add a shape to a link, you simply use the corresponding method. 
@@ -55,4 +53,4 @@ Appearance YoAppearance.StoneTexture(Component comp);
 
 ### Related Example:
 
-[Example of how YoAppearance is used](01-creating-links)
+[Example of how YoAppearance is used](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-creating-links.html)

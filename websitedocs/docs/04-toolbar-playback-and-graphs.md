@@ -1,7 +1,5 @@
 ---
-
 title: Simulation Replay
-
 ---
 
 Stop the Simulation if it is currently running.

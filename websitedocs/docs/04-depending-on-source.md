@@ -1,7 +1,5 @@
 ---
-
 title: Depending Directly on the Source
-
 ---
 
 For the IHMCOpenRoboticsSoftware and [ihmc-build](https://github.com/ihmcrobotics/ihmc-build) to work correctly when depending directly on the source, the Gradle project hierarchy needs to take a particular form. Let's assume you have a directory structure such as:

@@ -1,7 +1,5 @@
 ---
-
 title: MobileRobot Class Description
-
 ---
 
 ## 1. Add the following code to the MobileRobot Class
@@ -309,7 +307,7 @@ If not, try to experiment with it, or try making a simulation of a different sty
 
 
 
-For more detailed information on joints check out the [Robots and Joint API Page]
+For more detailed information on joints check out the [Robots and Joint API Page](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-definition-robot.html)
 
 
 ## Full Code for Classes
@@ -587,4 +585,3 @@ public class MobileRobot extends Robot
 ```
 </details>
 
-[Robots and Joint API Page](01-definition-robot)

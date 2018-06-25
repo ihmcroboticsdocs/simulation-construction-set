@@ -1,7 +1,5 @@
 ---
-
 title: Description and Analysis
-
 ---
 
 ###  1. Examine the FlyballGovernorRobot source code

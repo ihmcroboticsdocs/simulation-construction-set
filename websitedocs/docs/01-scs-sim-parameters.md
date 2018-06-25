@@ -1,7 +1,5 @@
 ---
-
 title: Simulation Parameters
-
 ---
 
 ```java

@@ -1,7 +1,5 @@
 ---
-
 title: Create the World
-
 ---
 
 ```java

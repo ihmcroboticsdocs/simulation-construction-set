@@ -1,7 +1,5 @@
 ---
-
 title: Introduction to special points
-
 ---
 
 

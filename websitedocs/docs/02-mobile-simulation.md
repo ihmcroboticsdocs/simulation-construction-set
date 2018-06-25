@@ -1,7 +1,5 @@
 ---
-
 title: Mobile Simulation
-
 ---
 
 ### Create the class MobileSimulation

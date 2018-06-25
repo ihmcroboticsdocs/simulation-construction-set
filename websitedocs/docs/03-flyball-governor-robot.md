@@ -1,7 +1,5 @@
 ---
-
 title: FlyballGovernorRobot Class
-
 ---
 
 ### Create another class called FlyballGovernorRobot

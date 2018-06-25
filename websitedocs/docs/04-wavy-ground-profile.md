@@ -1,7 +1,5 @@
 ---
-
 title: Create a New Class WavyGroundProfile
-
 ---
 
 ### Lastly Create a Class Named `WavyGroundProfile`

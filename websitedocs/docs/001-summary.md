@@ -1,7 +1,5 @@
 ---
-
-category: Summary
-
+title: Summary
 ---
  ![Duration](/img/clock-50.png) **Duration:** 10 min  
  ![Keywords](/img/concept-50.png) **Keywords:** Simulation, Robot, YoVariable, Controller 

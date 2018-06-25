@@ -1,7 +1,5 @@
 ---
-
 title: Building .jars
-
 ---
 
 IHMCOpenRoboticsSoftware is pre-configured for generating Maven publications. You can publish directly from the source code right in to your local Maven repository, e.g. the `$HOME/.m2` directory. These builds will be tagged with a build "version" of `"LOCAL"` instead of an incrementing version number.

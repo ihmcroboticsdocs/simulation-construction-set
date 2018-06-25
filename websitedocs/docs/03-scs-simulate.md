@@ -1,7 +1,5 @@
 ---
-
 title: Simulate methods
-
 ---
 
 ```java

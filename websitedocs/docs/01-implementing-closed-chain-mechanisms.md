@@ -1,7 +1,5 @@
 ---
- 
 title: Implementing Closed-Chain Mechanisms
- 
 ---
 
 Currently, the Simulation Construction Set only allows for systems which have a tree structure of Joints and Links. 

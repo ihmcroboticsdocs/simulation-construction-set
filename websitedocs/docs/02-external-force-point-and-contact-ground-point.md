@@ -1,7 +1,5 @@
 ---
-
 title: ExternalForcePoint and GroundContactPoint constructors and methods
-
 ---
 
 

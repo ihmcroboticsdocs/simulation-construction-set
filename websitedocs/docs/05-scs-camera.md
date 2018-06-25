@@ -1,7 +1,5 @@
 ---
-
 title: Camera Methods
-
 ---
 <a name="scsCameraAPI">
 
@@ -46,6 +44,5 @@ void setCameraDollyVars(String xName, String yName, String zName)
 Sets the variable names of the object the camera is dollying relative to. Default is q_x, q_y, q_z.
 
 ### Related Example:
-[Example of Camera Methods]
 
-[Example of Camera Methods]: 01-creating-a-new-project
+[Example of Camera Methods](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-creating-a-new-project.html)

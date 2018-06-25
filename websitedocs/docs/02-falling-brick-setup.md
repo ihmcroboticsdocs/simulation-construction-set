@@ -1,7 +1,5 @@
 ---
-
 title: Create a New Class FallingBrickSimulation
-
 ---
 ### Create a New Java Class Named FallingBrickSimulation
    Fill the class with the following:

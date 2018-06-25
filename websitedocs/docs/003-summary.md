@@ -1,7 +1,5 @@
 ---
-
-category: Summary
-
+title: Summary
 ---
  ![Duration](/img/clock-50.png) **Duration:** 15 min
  

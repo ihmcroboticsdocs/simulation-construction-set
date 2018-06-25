@@ -1,7 +1,5 @@
 ---
-
 title: Requirements
-
 ---
 
 *IHMCOpenRoboticsSoftware* uses the [Gradle build system](https://ihmcroboticsdocs.github.io/docs/installgradle.html), and requires [JDK 8](https://ihmcroboticsdocs.github.io/docs/installjava.html).

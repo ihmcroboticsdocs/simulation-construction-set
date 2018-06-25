@@ -1,7 +1,5 @@
 ---
-
 title: FlyballGovernorCommonControlParameters Class
-
 ---
 
 ### Create another class called FlyballGovernorCommonControlParameters

@@ -1,7 +1,5 @@
 ---
-
 title: Joint Constructor and methods
-
 ---
 
 
@@ -147,5 +145,5 @@ void setLimitStops(int axis, double q_min, double q_max, double k_limit, double 
 
 ### Related Example:
 
-[Example of Joint Constructor](01-create-new-package)
-[Example of Joint Methods](01-implementing-closed-chain-mechanisms)  
+[Example of Joint Constructor](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-create-new-package.html)
+[Example of Joint Methods](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-implementing-closed-chain-mechanisms.html)  

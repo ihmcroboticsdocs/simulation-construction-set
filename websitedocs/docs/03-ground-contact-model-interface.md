@@ -1,7 +1,5 @@
 ---
-
 title: GroundContactModel interface
-
 ---
 
 The forces applied to a GroundContactPoint are determined by the GroundContactModel which is set for the Robot.
@@ -23,4 +21,4 @@ public abstract GroundProfile getGroundProfile();
 
 ### Related Example: 
 
-[Example of GroundContactModel in Use](01a-create-new-package)
+[Example of GroundContactModel in Use](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01a-create-new-package.html)

@@ -1,7 +1,5 @@
 ---
-
 title: Create a New Package
-
 ---
 
 This figure shows a screen shot of the mobile simulation.

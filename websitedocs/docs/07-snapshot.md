@@ -1,7 +1,5 @@
 ---
-
 title: Export Snapshots and Video of the 3D View
-
 ---
 
 ### Export a JPEG Image

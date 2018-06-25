@@ -1,7 +1,5 @@
 ---
-
 title: Initial Variables in MobileRobot Class
-
 ---
 
 ### Create and add the class MobileRobot 

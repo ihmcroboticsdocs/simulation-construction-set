@@ -1,7 +1,5 @@
 ---
-
 title: FlyballGovernorSimpleClosedLoopConstraintController Class
-
 ---
 
 ### Create another class called FlyballGovernorSimpleClosedLoopConstraintController

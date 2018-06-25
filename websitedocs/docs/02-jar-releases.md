@@ -1,7 +1,5 @@
 ---
-
 title: Using IHMC Open Robotics Software .jar releases with Maven/Gradle
-
 ---
 
 *IHMCOpenRoboticsSoftware* binary releases are provided as Maven artifacts. Gradle can interact with *Maven repositories*, so we give the gradle script the URLs for a few different repositories, and then we can specify dependencies using the Maven "Group Artifact Version (GAV)" nomenclature. Packages are identified by their "group", a namespace that may contain several packages, followed by the "artifact", or the name of the package we want to pull in, and then the "version" of the package that we want.

@@ -1,7 +1,5 @@
 ---
-
 title: Create a New Class FallingBrickRobot
-
 ---
 
 ### Create a New Separate Class Called FallingBrickRobot

@@ -1,7 +1,5 @@
 ---
-
 title: Changing the Camera Settings
-
 ---
 
 The camera always looks at what is called the **Fix Point**.  This is a point in the 3D window which starts out being at (0.0, 0.0) the starting position of the robot.  To change the camera with the mouse, first make sure that the Track and Dolly check boxes in the toolbar are unchecked and then perform the following with the mouse pointer over the 3D window.
@@ -19,4 +17,4 @@ You can also change the camera parameters by using the dialog accessed through `
 
 * If tracking is enabled, then the camera will track the location specified by the simulation variables q_x, q_y, q_z. 
 * If dolly is enabled, then the camera will move at an offset from the location specified by the simulation variables q_x, q_y, q_z. 
-* The variables used for tracking or dolly can also be set using the [SimulationConstructionSet API](/documentation/20-scs/01-api/00-api/#Camera%20Methods).
+* The variables used for tracking or dolly can also be set using the [SimulationConstructionSet API](05-scs-camera).

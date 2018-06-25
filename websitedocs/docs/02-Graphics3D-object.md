@@ -35,6 +35,5 @@ public static final int Axis.Z;
 ```
 
 ### Related Example:  
-[Example of how LinkGraphicsDescription is used]
 
 [Example of how LinkGraphicsDescription is used](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/05-creating-links.html)

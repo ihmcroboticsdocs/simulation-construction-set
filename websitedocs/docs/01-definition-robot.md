@@ -1,7 +1,5 @@
 ---
-
 title: Robot
-
 ---
 
 A Robot consists of one or more trees of Joints, with each Joint having a corresponding link with mass and inertia. 

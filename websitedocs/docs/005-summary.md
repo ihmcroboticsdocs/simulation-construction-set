@@ -1,7 +1,5 @@
 ---
-
-category: Summary
-
+title: Summary
 ---
  ![Duration](/img/clock-50.png) **Duration:** 20 min  
  ![Keywords](/img/concept-50.png) **Keywords:** Closed-Chain Mechanisms, Rotation, Torque, External Force Points

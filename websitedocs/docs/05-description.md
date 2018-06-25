@@ -1,7 +1,5 @@
 ---
-
 title: Description and Analysis
-
 ---
 
 ### 1. Add the constructor to the FallingBrickRobot class
@@ -224,7 +222,7 @@ Since `WavyGroundProfile` implements the interface `GroundProfile`, it defines t
 ### 5. Change the profile of the terrain
    Do this by changing the function `heightAt`. Run the simulation and see how the profile of the ground changed.
    
-   To read more about how to use and setup GroundProfile check out the [Ground Profile Interface API] page.
+   To read more about how to use and setup GroundProfile check out the [Ground Profile Interface API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-introduction-to-points.html) page.
 
 ### 6. Examine the file LinearGroundContactModel.java
    Since `LinearGroundContactModel` implements the interface `GroundContactModel`, it defines the method `doGroundContact`, where the ground contact forces are computed.
@@ -556,5 +554,3 @@ public class WavyGroundProfile implements GroundProfile3D, HeightMapWithNormals
 }
 ```
 </details>
-
-[Ground Profile Interface API]: 01-introduction-to-points

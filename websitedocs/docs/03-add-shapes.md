@@ -96,4 +96,4 @@ void addCoordinateSystem (double length)
 
 ### Related Example:
 
-[Example of Adding Shapes](04-yo-appearance-api)
+[Example of Adding Shapes](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/04-yo-appearance-api.html)

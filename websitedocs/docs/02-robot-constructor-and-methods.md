@@ -1,7 +1,5 @@
 ---
-
 title: Robot Constructor and Methods
-
 ---
 
 Table 5 contains the constructors and methods for the class Robot.

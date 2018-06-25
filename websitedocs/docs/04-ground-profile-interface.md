@@ -1,8 +1,6 @@
 ---
-
 title: GroundProfile Interface
-
---- 
+---
 
 GroundProfile is an interface. By setting a GroundProfile to your GroundContactModel, and by setting your GroundContactModel to your robot, the ground when the simulation is run will be drawn as the ground profile.
 The user can generate his/her own GroundProfile, or can use one of the GroundProfiles provided in the com.yobotics.simulationconstructionset.utils package. 
@@ -49,4 +47,4 @@ public abstract double getYTiles();
 
 ### Related Example: 
 
-[Example of GroundProfile in Use](04-wavy-ground-profile)
+[Example of GroundProfile in Use](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/04-wavy-ground-profile.html)

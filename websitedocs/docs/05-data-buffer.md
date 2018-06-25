@@ -1,10 +1,8 @@
 ---
-
 title: Data Buffer
-
 ---
 
-As the robot is simulated, the data is stored in a data buffer. The period in which data is stored defaults to once every 20 milliseconds (50 Hertz). This can be changed through the [SimulationConstructionSet API](00-scs-initialization). The default size of the data buffer is 16000 points. With these two defaults, 320 seconds of data can be recorded. If the simulation runs over this size, the current index is wrapped to the beginning of the buffer.
+As the robot is simulated, the data is stored in a data buffer. The period in which data is stored defaults to once every 20 milliseconds (50 Hertz). This can be changed through the [SimulationConstructionSet API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/00-scs-initialization). The default size of the data buffer is 16000 points. With these two defaults, 320 seconds of data can be recorded. If the simulation runs over this size, the current index is wrapped to the beginning of the buffer.
 
 To change the data buffer properties, go to `Data Buffer->Data Buffer Properties` on the menu.
 

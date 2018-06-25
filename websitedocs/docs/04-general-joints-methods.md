@@ -1,7 +1,5 @@
 ---
-
 title: General Joint Methods
-
 ---
 
 Table 7 lists the methods which all Joints share. Each joint has a corresponding link. 

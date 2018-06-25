@@ -1,7 +1,5 @@
 ---
-
 title: FlyballGovernorSimulation Class
-
 ---
 
 ### Create a class called FlyballGovernorSimulation

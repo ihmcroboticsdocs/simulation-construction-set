@@ -1,7 +1,5 @@
 ---
-
 title: Graphing Variables
-
 ---
 SCS allows for displaying 2D graphs of any variable in the simulation.
 

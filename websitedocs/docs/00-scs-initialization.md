@@ -1,7 +1,5 @@
 ---
-
 title: Constructors
-
 ---
 
 ```java
