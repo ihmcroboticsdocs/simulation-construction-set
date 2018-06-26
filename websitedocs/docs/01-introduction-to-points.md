@@ -41,4 +41,4 @@ efp1_fz.val = 1.0;
 
 ### Related Example:
 
-[Example of special points in use](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/10-implementing-closed-chain-mechanisms-using-external-force-points.html)
+[Example of special points in use](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-implementing-closed-chain-mechanisms.html)

@@ -36,4 +36,4 @@ If fastSimulate is true, makes the GUI less responsive during simulation in orde
 
 ### Related Example:
 
-[Example of Simulation Parameters](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/02-creating-a-new-simulation.html)
+[Example of Simulation Parameters](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/000-summary.html)

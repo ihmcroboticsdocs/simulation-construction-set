@@ -13,16 +13,10 @@ const siteConfig = {
   tagline: 'IHMC SCS Documentation',
   url: 'https://ihmcroboticsdocs.github.io' /* your website url */,
   baseUrl: '/simulation-construction-set/' /* base url for your project */,
-  // For github.io type URLs, you would set the url and baseUrl like:
-  //   url: 'https://facebook.github.io',
-  //   baseUrl: '/test-site/',
 
   // Used for publishing and more
   projectName: 'simulation-construction-set',
   organizationName: 'ihmcroboticsdocs',
-  // For top-level user or org sites, the organization is still the same.
-  // e.g., for the https://JoelMarcey.github.io site, it would be set like...
-  //   organizationName: 'JoelMarcey'
 
   // For no header links in the top nav bar -> headerLinks: [],
    headerLinks: [
@@ -81,9 +75,6 @@ const siteConfig = {
   /* On page navigation for the current documentation page */
   onPageNav: 'separate',
 
-  // You may provide arbitrary config keys to be used as needed by your
-  // template. For example, if you need your repo's URL...
-  //   repoUrl: 'https://github.com/facebook/test-site',
 };
 
 module.exports = siteConfig;

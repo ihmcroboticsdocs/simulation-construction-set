@@ -35,4 +35,4 @@ Void setLinkGraphics(Graphics3DObject linkGraphics)
 
 ### Related Example:
 
-[Example of how Link Constructors are used](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/05-creating-links.html)
+[Example of how Link Constructors are used](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-creating-links.html)
