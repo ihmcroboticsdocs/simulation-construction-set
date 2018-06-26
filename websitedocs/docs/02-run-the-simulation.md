@@ -11,7 +11,7 @@ Also, look for the "tau_fulcrum" variable and add it to a new graph. This latter
 
 ### 2. Simulate and Experiment
 
-Click on the Simulate button ![simulate](/img/scs-tutorials/scsSimulateButton.png). This time the pendulum should start moving and very rapidly stabilize toward its desired angle position value.  
+Click on the Simulate button: ![simulate](/img/scs-tutorials/scsSimulateButton.png) This time the pendulum should start moving and very rapidly stabilize toward its desired angle position value.  
 Zoom in a little, notice that the graph accurately shows the trajectory of the pendulum at each time step. 
 
 ![pendulum initial state](/img/scs-tutorials/simple-pendulum/simple_pendulum_controller.gif)

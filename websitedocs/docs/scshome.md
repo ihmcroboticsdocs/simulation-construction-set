@@ -21,8 +21,8 @@ The Simulation Construction Set is a full-featured software package for easily a
 The Simulation Construction Set is easy to use, yet powerful enough for creating complex simulations of robotic devices. Simulations of multi-jointed devices can be created in a matter of minutes. Arbitrary control can be added to these devices as each degree of freedom automatically has a simulated actuator associated with it. For power users, the simulations are easily extensible, as they are implemented 100% in Java, with a documented Application Programmers Interface (API). 
 With the Simulation Construction Set, you can be on your way to simulating complex robotic systems without going through the tedious and error prone process of manually calculating equations of motion. You'll get immediate instantaneous feedback through both cartoon animations of your simulation, and through plots of any simulation variable. You'll have the power to quickly tweak your robot designs and control systems by the easy modification of your simulations. Whatever your robotic simulation needs, the Simulation Construction Set will enable you to more quickly and accurately simulate your robot, allowing you to concentrate on the more important aspects of design and control. This manual will explain how to setup and run the Simulation Construction Set. Several Tutorials are included for helping you climb the learning curve. After completing these tutorials you should be able to easily simulate complex robot devices, including walking robots, robot arms, mechanical links, and mechanisms. 
 
-View our [tutorials](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/00-quickstart.html)
+View our [tutorials](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/00-quickstart.html).
 
-View our [API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/006-summary.html)
+View our [API](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/006-summary.html).
 
 See our [GitHub repository](https://github.com/ihmcrobotics/simulation-construction-set).

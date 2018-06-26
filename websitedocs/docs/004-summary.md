@@ -9,4 +9,4 @@ In the previous tutorial we had created a model of a child's toy mobile using li
 In this tutorial, we will create a simulation of a brick falling on a wavy ground.
 You will gain more experience with specifying ground contact, terrain, and damping. 
 
-This tutorial assumes that you have completed the [Creating a Robot with Multiple Joints](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/07-creating-robot-with-multiple-joints.html) tutorial.
+This tutorial assumes that you have completed the [Creating a Robot with Multiple Joints](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/003-summary.html) tutorial.

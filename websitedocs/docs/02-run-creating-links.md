@@ -6,7 +6,7 @@ title: Run the Simulation
 ### 1. Run LinkExampleSimulation. 
    You should get a view resembling that of the figure below.
    
-![ Six example shapes. Coordinate systems are located at the origin of each shape.](/img/documentation/Black6Figures.png)
+![ Six example shapes. Coordinate systems are located at the origin of each shape.](/img/documentation/Black6Figures.PNG)
 
 ### 2. Modify the values of the parameters of some of the shapes
 

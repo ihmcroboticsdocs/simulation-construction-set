@@ -14,7 +14,7 @@ This variable represents the value of the pivot angle in radians and should osci
 
 ### 2. Simulate
 
-Click on the Simulate button ![simulate](/img/scs-tutorials/scsSimulateButton.png). The pendulum should start swinging very rapidly and finally stop after converging to its equilibrium position.  
+Click on the Simulate button: ![simulate](/img/scs-tutorials/scsSimulateButton.png) The pendulum should start swinging very rapidly and finally stop after converging to its equilibrium position.  
 The simulation should stop shortly after the pendulum position has converged. That's perfectly normal.
 If you remember we had set the simulation time parameter to 60 seconds and in simulate mode, SCS will run as fast as possible, in this case, faster than real-time.  
 

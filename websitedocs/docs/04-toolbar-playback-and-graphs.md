@@ -21,4 +21,4 @@ Zoom out so that you can see the in point (green line), out point (red line) and
 * Change the in point to current index (black line) by either going to `Run->Set In Point` on the menu or by pushing the Set In Point button ![SetIn](/img/scs-tutorials/scsSetInPointButton.png).
 * Change the out point to the current index by going to `Run->Set Out Point` on the menu or by pushing the Set Out Point button ![SetOut](/img/scs-tutorials/scsSetOutPointButton.png).
 
-Play the simulation ( `Run->Play` on menu or play button ![replay](/img/scs-tutorials/scsReplayButton.png) ) and notice that it now loops around the new in and out points. Note that if the in point is after the out point, then the playback loops around the entire data buffer, which is a circular buffer.
+Play the simulation `Run->Play` on menu or play button: ![replay](/img/scs-tutorials/scsReplayButton.png) and notice that it now loops around the new in and out points. Note that if the in point is after the out point, then the playback loops around the entire data buffer, which is a circular buffer.
