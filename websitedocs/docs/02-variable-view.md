@@ -2,7 +2,7 @@
 title: SCS Variables
 ---
 
-In the variable view on the bottom left you can view the current value of any simulation variable and change its value as you did with the `walk` variable in the [Quick Start].  This view contains three tabs: Name Space, Variables, and Search.
+In the variable view on the bottom left you can view the current value of any simulation variable and change its value as you did with the `walk` variable in the [Quick Start](https://ihmcrobotics.github.io/ihmc-open-robotics-software/docs/quickstarthome.html).  This view contains three tabs: Name Space, Variables, and Search.
 
 ### Name Space Tab
 

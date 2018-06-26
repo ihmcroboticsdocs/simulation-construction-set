@@ -40,7 +40,7 @@ public class SimplePendulumSimulation
 
 * **Copy the Code and Run the Simulation**
 Replace your class contents with the above and run the simulation.
-Don't forget to add `-Xms4096m -Xmx4096m` to your VM's run configuration as specified in the [Quick Start]. Since there is no robot in your simulation, you will just get an empty world as follows:
+Don't forget to add `-Xms4096m -Xmx4096m` to your VM's run configuration as specified in the [Quick Start](https://ihmcrobotics.github.io/ihmc-open-robotics-software/docs/quickstarthome.html). Since there is no robot in your simulation, you will just get an empty world as follows:
     ![blank simulation](/img/documentation/scsTutorial/blank-Simulation.png)
 
 ### 2.Set the Simulation Parameters

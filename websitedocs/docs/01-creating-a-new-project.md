@@ -2,7 +2,7 @@
 title: Create a New Project
 ---
 
-First you need to create the `SimulationConstructionSetTutorial` *Gradle project* which references some IHMC Maven artifacts.  This project will also be used by all the other SCS tutorials. If you need a reminder of how to create the project, checkout the [Quick Start](https://ihmcroboticsdocs.github.io/docs/quickstarthome.html).
+First you need to create the `SimulationConstructionSetTutorial` *Gradle project* which references some IHMC Maven artifacts.  This project will also be used by all the other SCS tutorials. If you need a reminder of how to create the project, checkout the [Quick Start](https://ihmcroboticsdocs.github.io/ihmc-open-robotics-software/docs/quickstarthome.html).
 
 ### 1. Create the Project Directory Structure and the build.gradle File
 
