@@ -98,23 +98,24 @@ Don't forget to add <code>-Xms4096m -Xmx4096m</code> to your VM's run configurat
 <p><br></p>
 <p>If you run the simulation now, it will not look any different, but what you have done is:</p>
 <ul>
-<li><p><strong>Create Simulation Parameters</strong>  <br>
-<code>SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();</code>
-Instantiate a <code>SimulationConstructionSetParameters</code> object
-<code>parameters.setDataBufferSize(32000);</code>
-Sets the initial data buffer size to be 32000 bytes.</p></li>
-<li><p><strong>Create a new Simulation and set its properties</strong>
-<code>sim = new SimulationConstructionSet(parameters);</code>  <br>
-Instantiate a new Runnable SimulationConstructionSet object with default values and a buffer size of 32000 bytes as defined in <code>parameters</code> object<br>
-<code>sim.setDT(DT, 20);</code>  <br>
-Sets the simulation's delta time value to be 20 milliseconds.<br>
-<code>sim.setGroundVisible(true);</code>  <br>
-Sets the ground to be visible in the 3D view.<br>
-<code>sim.setCameraPosition(0, -9.0, 0.6);</code>  <br>
-<code>sim.setCameraFix(0.0, 0.0, 0.70);</code>  <br>
-Sets the location and orientation of the camera in the 3D world.<br>
-<code>sim.setSimulateDuration(60.0);</code>  <br>
-Specifies that the simulation will only run for a duration of 60 seconds.  For this tutorial, this allows the simulation to run to a point where it does not overflow the data buffer.</p></li>
+<li><strong>Create Simulation Parameters</strong></li>
+</ul>
+<ul>
+<li><code>SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();</code></li>
+<li>Instantiate a <code>SimulationConstructionSetParameters</code> object</li>
+<li><code>parameters.setDataBufferSize(32000);</code> sets the initial data buffer size to be 32000 bytes.</li>
+</ul>
+<ul>
+<li><strong>Create a new Simulation and set its properties</strong></li>
+</ul>
+<ul>
+<li><code>sim = new SimulationConstructionSet(parameters);</code></li>
+<li>Instantiate a new Runnable SimulationConstructionSet object with default values and a buffer size of 32000 bytes as defined in <code>parameters</code> object</li>
+<li><code>sim.setDT(DT, 20);</code>  sets the simulation's delta time value to be 20 milliseconds.</li>
+<li><code>sim.setGroundVisible(true);</code>  sets the ground to be visible in the 3D view.</li>
+<li><code>sim.setCameraPosition(0, -9.0, 0.6);</code>  <br>
+<code>sim.setCameraFix(0.0, 0.0, 0.70);</code>  sets the location and orientation of the camera in the 3D world.</li>
+<li><code>sim.setSimulateDuration(60.0);</code>  specifies that the simulation will only run for a duration of 60 seconds.  For this tutorial, this allows the simulation to run to a point where it does not overflow the data buffer.</li>
 </ul>
 <p>Now it's time to add a robot.</p>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/simulation-construction-set/docs/01-creating-a-new-project.html">← Create a New Project</a><a class="docs-next button" href="/simulation-construction-set/docs/03-simple-pendulum-robot.html">SimplePendulumRobot.java →</a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/simulation-construction-set/" class="nav-home"><img src="/simulation-construction-set/img/running-man-logo.png" alt="Simulation Construction Set" width="66" height="58"/></a><div><h5>Docs</h5><a href="https://ihmcroboticsdocs.github.io/ihmc-open-robotics-software/docs/quickstarthome.html">Quick Start</a><a href="https://ihmcroboticsdocs.github.io/docs/docshome.html">Software Documentation</a></div><div><h5>Community</h5><a href="https://github.com/ihmcrobotics">GitHub</a><a href="https://www.facebook.com/TheIHMC" target="_blank" rel="noreferrer noopener">Facebook</a><a href="https://twitter.com/ihmcrobotics" target="_blank" rel="noreferrer noopener">Twitter</a><a href="https://www.youtube.com/user/DRCihmcRobotics" target="_blank" rel="noreferrer noopener">YouTube</a></div></section><section class="copyright">Copyright © 2018 IHMC Robotics</section></footer></div></body></html>
