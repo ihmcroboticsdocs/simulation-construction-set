@@ -90,22 +90,17 @@ public class SimplePendulumSimulation
 If you run the simulation now, it will not look any different, but what you have done is:
 
 * **Create Simulation Parameters**  
-`SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();`
-Instantiate a `SimulationConstructionSetParameters` object
-`parameters.setDataBufferSize(32000);`
-Sets the initial data buffer size to be 32000 bytes.
+- `SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();`
+- Instantiate a `SimulationConstructionSetParameters` object
+- `parameters.setDataBufferSize(32000);` sets the initial data buffer size to be 32000 bytes.
 
 * **Create a new Simulation and set its properties**
-`sim = new SimulationConstructionSet(parameters);`  
-Instantiate a new Runnable SimulationConstructionSet object with default values and a buffer size of 32000 bytes as defined in `parameters` object   
-`sim.setDT(DT, 20);`  
-Sets the simulation's delta time value to be 20 milliseconds.             
-`sim.setGroundVisible(true);`  
-Sets the ground to be visible in the 3D view.  
-`sim.setCameraPosition(0, -9.0, 0.6);`  
-`sim.setCameraFix(0.0, 0.0, 0.70);`  
-Sets the location and orientation of the camera in the 3D world.  
-`sim.setSimulateDuration(60.0);`  
-Specifies that the simulation will only run for a duration of 60 seconds.  For this tutorial, this allows the simulation to run to a point where it does not overflow the data buffer.
+- `sim = new SimulationConstructionSet(parameters);`  
+- Instantiate a new Runnable SimulationConstructionSet object with default values and a buffer size of 32000 bytes as defined in `parameters` object   
+- `sim.setDT(DT, 20);`  sets the simulation's delta time value to be 20 milliseconds.             
+- `sim.setGroundVisible(true);`  sets the ground to be visible in the 3D view.  
+- `sim.setCameraPosition(0, -9.0, 0.6);`  
+  `sim.setCameraFix(0.0, 0.0, 0.70);`  sets the location and orientation of the camera in the 3D world.  
+- `sim.setSimulateDuration(60.0);`  specifies that the simulation will only run for a duration of 60 seconds.  For this tutorial, this allows the simulation to run to a point where it does not overflow the data buffer.
 
 Now it's time to add a robot.
