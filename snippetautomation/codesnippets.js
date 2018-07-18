@@ -66,7 +66,7 @@ Promise.all(urls).then(function(values) {
 						}
 					else 
 						{
-						endIndex = dataFromSource.indexOf(portions[i][1]);
+						endIndex = dataFromSource.indexOf(portions[i][1],startIndex);
 						codeChunk = codeChunk + "\n" + dataFromSource.substring(startIndex, endIndex);
 						}
 					}
