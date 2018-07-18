@@ -112,7 +112,7 @@ This method will randomly select a string length, an appearance and a shape for 
 
 If not, try to experiment with it, or try making a simulation of a different style of mobile to become comfortable with joints and links.
 
-<pre><code data-url-index="0" data-snippet="portion" data-start="/**&#10    * Generates a random link shape with a thin cylinder" data-end="" id="MobileRobotRandomShape"></code></pre>
+<pre><code data-url-index="0" data-snippet="portion" data-start="/**&#10    * Generates a random link shape with a thin cylinder" id="MobileRobotRandomShape"></code></pre>
 
 
 For more detailed information on joints check out the [Robots and Joint API Page](https://ihmcroboticsdocs.github.io/simulation-construction-set/docs/01-definition-robot.html)
