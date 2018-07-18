@@ -27,13 +27,16 @@ Promise.all(urls).then(function(values) {
 		while(matchIndex != -1) {				
 			//Change inner HTML of code block
 			var codeBlock = allCodeBlocks[matchIndex];
-			if(codeBlock.getAttribute('data-snippet') == "complete")
+			var typeOfSnippet = codeBlock.getAttribute('data-snippet');
+			if(typeOfSnippet == "complete")
 				{
 				codeBlock.innerHTML = hljs.highlight('java', dataFromSource).value;
 				}
-			else 
+			else if(typeOfSnippet == "portion") 
 				{
 				var startIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-start'));
+				
+				//Substring from index to the rest of file
 				if(codeBlock.getAttribute('data-end') === null) 
 					{
 					var codeChunk = dataFromSource.substring(startIndex);
@@ -44,6 +47,11 @@ Promise.all(urls).then(function(values) {
 					var codeChunk = dataFromSource.substring(startIndex, endIndex);
 					}
 				codeBlock.innerHTML = hljs.highlight('java', codeChunk).value;
+				}
+			else
+				//If the snippet involves multiple portions, data-snippet="multipleportions"
+				{
+				var portions = codeBlock.getAttribute('data-portions');
 				}
 			allCodeBlocks.splice(matchIndex, 1);  //removes the element after operating on it
 			
