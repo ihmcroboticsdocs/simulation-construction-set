@@ -24,35 +24,54 @@ Promise.all(urls).then(function(values) {
 			});	
 		
 		//For each URL, find all the code blocks with matching data-url-index 
-		while(matchIndex != -1) {				
+		while(matchIndex != -1) {		
+			
 			//Change inner HTML of code block
 			var codeBlock = allCodeBlocks[matchIndex];
 			var typeOfSnippet = codeBlock.getAttribute('data-snippet');
+			var codeChunk = "";
+			var startIndex, endindex;
+			
 			if(typeOfSnippet == "complete")
 				{
-				codeBlock.innerHTML = hljs.highlight('java', dataFromSource).value;
+				codeChunk = dataFromSource;
 				}
 			else if(typeOfSnippet == "portion") 
 				{
-				var startIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-start'));
+				startIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-start'));
 				
 				//Substring from index to the rest of file
 				if(codeBlock.getAttribute('data-end') === null) 
 					{
-					var codeChunk = dataFromSource.substring(startIndex);
+					codeChunk = dataFromSource.substring(startIndex);
 					}
 				else 
 					{
-					var endIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-end'), startIndex);
-					var codeChunk = dataFromSource.substring(startIndex, endIndex);
+					endIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-end'), startIndex);
+					codeChunk = dataFromSource.substring(startIndex, endIndex);
 					}
-				codeBlock.innerHTML = hljs.highlight('java', codeChunk).value;
 				}
 			else
 				//If the snippet involves multiple portions, data-snippet="multipleportions"
 				{
-				var portions = codeBlock.getAttribute('data-portions');
+				var portions = eval(codeBlock.getAttribute('data-portions'));
+				for(int i = 0; i < portions.length; i++)
+					{
+					startIndex = dataFromSource.indexOf(portions[i][0]);
+					
+					//Substring with start index to rest of file
+					if(portions[i].length == 1)
+						{
+						codeChunk = dataFromSource.substring(startIndex);
+						}
+					else 
+						{
+						endIndex = dataFromSource.indexOf(portions[i][1]);
+						codeChunk = codeChunk + "\n" + dataFromSource.substring(startIndex, endIndex);
+						}
+					}
 				}
+			codeBlock.innerHTML = hljs.highlight('java', codeChunk).value;
 			allCodeBlocks.splice(matchIndex, 1);  //removes the element after operating on it
 			
 			matchIndex = allCodeBlocks.findIndex(function(element) {

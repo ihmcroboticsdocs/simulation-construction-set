@@ -6,6 +6,11 @@ title: FlyballGovernorRobot Class
    Fill the class with the following:  
    This class simply creates the initControl and doControl methods and declares initial variables that can be easily changed later on.
 
+THIS IS WHERE THE PORTIONS START
+<pre><code data-url-index="0" data-snippet="multipleportions" data-portions='[["package","public FlyballGovernorRobot"],["public ExternalForcePoint","private Link"]]' id="FlyballRobotTop"></code></pre>
+
+OLD STUFF
+
 <pre><code data-url-index="0" data-snippet="portion" data-start="package" data-end="public FlyballGovernorRobot" id="FlyballRobotTop"></code></pre>
 <pre><code data-url-index="0" data-snippet="portion" data-start="public ExternalForcePoint" data-end="private Link" id="FlyballRobotMiddle"></code></pre>
 <pre><code data-url-index="0" data-snippet="portion" data-start="private YoDouble tau_rotation, q_cylinder_z, qd_cylinder_z;" id="FlyballRobotBottom"></code></pre>
