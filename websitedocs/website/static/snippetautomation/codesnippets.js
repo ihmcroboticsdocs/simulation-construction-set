@@ -55,18 +55,18 @@ Promise.all(urls).then(function(values) {
 				//If the snippet involves multiple portions, data-snippet="multipleportions"
 				{
 				var portions = eval(codeBlock.getAttribute('data-portions'));
-				for(int i = 0; i < portions.length; i++)
+				for(j = 0; j < portions.length; j++)
 					{
-					startIndex = dataFromSource.indexOf(portions[i][0]);
+					startIndex = dataFromSource.indexOf(portions[j][0]);
 					
 					//Substring with start index to rest of file
-					if(portions[i].length == 1)
+					if(portions[j].length == 1)
 						{
-						codeChunk = dataFromSource.substring(startIndex);
+						codeChunk = codeChunk + "\n" + dataFromSource.substring(startIndex);
 						}
 					else 
 						{
-						endIndex = dataFromSource.indexOf(portions[i][1]);
+						endIndex = dataFromSource.indexOf(portions[j][1],startIndex);
 						codeChunk = codeChunk + "\n" + dataFromSource.substring(startIndex, endIndex);
 						}
 					}

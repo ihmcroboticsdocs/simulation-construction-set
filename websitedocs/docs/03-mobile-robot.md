@@ -7,8 +7,6 @@ title: Initial Variables in MobileRobot Class
 
    These are the separately declared variables that are meant to be easily changed if needed.
 
-<pre><code data-url-index="0" data-snippet="portion" data-start="package" data-end="public MobileRobot()" id="MobileRobotVariables"></code></pre>
-
-<pre><code data-url-index="0" data-snippet="portion" data-start="/**&#10    * Initializes a GimbalJoint to a random initial position and velocity." data-end="/**&#10    * Creates a cross bar link from the given parameters." id="MobileRobotInitJoint"></code></pre>
+<pre><code data-url-index="0" data-snippet="multipleportions" data-portions='[["package","public MobileRobot()"],["/\*\*\n    \* Initializes a GimbalJoint to a random initial position and velocity.","/\*\*\n    \* Creates a cross bar link from the given parameters."]]' id="MobileRobotVariables"></code></pre>
 
 <script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileRobot.java")></script>

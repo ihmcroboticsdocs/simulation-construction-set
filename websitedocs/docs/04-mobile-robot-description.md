@@ -4,8 +4,7 @@ title: MobileRobot Class Description
 
 ## 1. Add the following code to the MobileRobot Class
 
-<pre><code data-url-index="0" data-snippet="portion" data-start="public MobileRobot()" data-end="&#10&#10" id="MobileRobotConstructor1"></code></pre>
-<pre><code data-url-index="0" data-snippet="portion" data-start="// create first gimbal joint" data-end=" /**&#10    * Initializes a GimbalJoint to a random initial position and velocity." id="MobileRobotConstructor2"></code></pre>
+<pre><code data-url-index="0" data-snippet="multipleportions" data-portions='[["public MobileRobot()","\n\n"],["// create first gimbal joint","/\*\*"]]' id="MobileRobotConstructor"></code></pre>
 
 Examine the lines where the 3 different levels of gimbal joints are defined. Note how in Java, Strings can be concatenated using `" " + " "`, and that integers will be turned into Strings in this way. For example, if `i=3`, then `"gimbal1_" + i "_x"` will result in `"gimbal1_3_x"`.
    
