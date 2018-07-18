@@ -34,8 +34,15 @@ Promise.all(urls).then(function(values) {
 			else 
 				{
 				var startIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-start'));
-				var endIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-end'), startIndex);
-				var codeChunk = dataFromSource.substring(startIndex, endIndex);
+				if(codeBlock.getAttribute('data-end') === null) 
+					{
+					var codeChunk = dataFromSource.substring(startIndex);
+					}
+				else 
+					{
+					var endIndex = dataFromSource.indexOf(codeBlock.getAttribute('data-end'), startIndex);
+					var codeChunk = dataFromSource.substring(startIndex, endIndex);
+					}
 				codeBlock.innerHTML = hljs.highlight('java', codeChunk).value;
 				}
 			allCodeBlocks.splice(matchIndex, 1);  //removes the element after operating on it
