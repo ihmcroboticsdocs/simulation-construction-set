@@ -55,7 +55,7 @@ Promise.all(urls).then(function(values) {
 				//If the snippet involves multiple portions, data-snippet="multipleportions"
 				{
 				var portions = eval(codeBlock.getAttribute('data-portions'));
-				for(int i = 0; i < portions.length; i++)
+				for(i = 0; i < portions.length; i++)
 					{
 					startIndex = dataFromSource.indexOf(portions[i][0]);
 					
