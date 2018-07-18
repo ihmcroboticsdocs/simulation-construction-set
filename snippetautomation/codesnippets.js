@@ -62,7 +62,7 @@ Promise.all(urls).then(function(values) {
 					//Substring with start index to rest of file
 					if(portions[i].length == 1)
 						{
-						codeChunk = dataFromSource.substring(startIndex);
+						codeChunk = codeChunk + "\n" + dataFromSource.substring(startIndex);
 						}
 					else 
 						{
