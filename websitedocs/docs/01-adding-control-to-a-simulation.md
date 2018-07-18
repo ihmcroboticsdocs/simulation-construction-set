@@ -47,47 +47,8 @@ public class SimplePendulumController implements RobotController
 
 We will start by populating the class with the following elements: 
 
-```java
-   
-   // A name for this controller
-   private final String name = "pendulumController";
+<pre><code data-url-index="0" data-snippet="portion" data-start="//" data-end="@Override" id="controllerProperties"></code></pre>
 
-   // This line instantiates a registry that will contain relevant controller variables that will be accessible from the simulation panel.
-   private final YoVariableRegistry registry = new YoVariableRegistry("PendulumController");
-
-   // This is a reference to the SimplePendulumRobot that enables the controller to access this robot's variables.
-   private SimplePendulumRobot robot;
-
-   /* Control variables: */
-
-   // Target angle
-   private DoubleYoVariable desiredPositionRadians;
-
-   // Controller parameter variables
-   private DoubleYoVariable p_gain, d_gain, i_gain;
-
-   // This is the desired torque that we will apply to the fulcrum joint (PinJoint)
-   private double torque;
-
-   
-
-   /* Constructor: 
-    Where we instantiate and initialize control variables 
-   */
-   public SimplePendulumController(SimplePendulumRobot robot)
-   {
-      this.robot = robot;
-      desiredPositionRadians = new DoubleYoVariable("DesiredPosRad", registry);
-      desiredPositionRadians.set(-1.5);
-
-      p_gain = new DoubleYoVariable("ProportionalGain", registry);
-      p_gain.set(250.0);
-      d_gain = new DoubleYoVariable("DerivativeGain", registry);
-      d_gain.set(100.0);
-      i_gain = new DoubleYoVariable("IntegralGain", registry);
-      i_gain.set(10.0);
-   }
-```
 
 ### 3. Add some accessors to the SimplePendulumRobot
 
@@ -97,8 +58,8 @@ Above the constructor add some variables to store the current state of the fulcr
 
 ```java
 
-   /* Some joint state variables */
-   private DoubleYoVariable tau_fulcrum, q_fulcrum, qd_fulcrum; // Respectively Torque, Position, Velocity
+/* Some joint state variables */
+   private YoDouble tau_fulcrum, q_fulcrum, qd_fulcrum; // Respectively Torque, Position, Velocity
 
 ```
 
@@ -120,73 +81,11 @@ Add some more lines of code to the constructor to access to the joint's properti
 ```
 
 Add some accessor methods to the pendulum robot.
+<pre><code data-url-index="1" data-snippet="portion" data-start="/**&#10    * Fulcrum's angular velocity" data-end="/**&#10    * Create the first link for the DoublePendulumRobot." id="robotMethods"></code></pre>
 
-```java
-
-   /**
-    * Fulcrum's angular position in radians
-    * @return angular position in radians
-    */
-   public double getFulcrumAngularPosition()
-   {
-      return q_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Fulcrum's angular velocity in radians per seconds
-    * @return angular velocity in radians per seconds
-    */
-   public double getFulcrumAngularVelocity()
-   {
-      return qd_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Fulcrum's torque in Newton meter
-    * @return Torque in Newton meter
-    */
-   public double getFulcrumTorque()
-   {
-      return tau_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Set Fulcrum's torque in Newton meter
-    * @return Torque in Newton meter
-    */
-   public void setFulcrumTorque(double tau)
-   {
-      this.tau_fulcrum.set(tau);
-   }
-   
-```
-
-Now that we have access to these variables, we can use them in our `doControl()` method.
-
-```java
-   
-   private double positionError = 0;
-   private double integralError = 0;
-
-   @Override public void doControl()
-   {
-      // ERROR term: Compute the difference between the desired position of the pendulum and its current position
-      positionError = desiredPositionRadians.getDoubleValue() - robot.getFulcrumAngularPosition();
-
-      // INTEGRAL term: Compute a simple numerical integration of the position error
-      integralError += positionError * SimplePendulumSimulation.DT;
-
-      // P.I.D
-      torque =   p_gain.getDoubleValue() * positionError
-               + i_gain.getDoubleValue() * integralError
-               + d_gain.getDoubleValue() * (0 - robot.getFulcrumAngularVelocity());
-
-      robot.setFulcrumTorque(torque);
-   }
-   
-```
-
-
+Now that we have access to these variables, we can use them in our doControl() method.
+<pre><code data-url-index="0" data-snippet="portion" data-start="private double positionError" data-end="@Override public YoVariableRegistry" id="robotMethods"></code></pre>
+-
 ### 4. Link the controller to the robot 
 
 In order for the control code to be accessed, it must be set in Simulation Construction Set. 
@@ -207,272 +106,17 @@ Therefore, in the `SimplePendulumSimulation` class add the following line of cod
 
 <details>
 <summary> Simple Pendulum Controller </summary>
-
-```java
-package us.ihmc.exampleSimulations.simplePendulum;
-
-import us.ihmc.robotics.dataStructures.registry.YoVariableRegistry;
-import us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
-import us.ihmc.robotics.robotController.RobotController;
-
-public class SimplePendulumController implements RobotController
-{
-   // A name for this controller
-   private final String name = "pendulumController";
-
-   // This line instantiates a registry that will contain relevant controller variables that will be accessible from the simulation panel.
-   private final YoVariableRegistry registry = new YoVariableRegistry("PendulumController");
-
-   // This is a reference to the SimplePendulumRobot that enables the controller to access this robot's variables.
-   private SimplePendulumRobot robot;
-
-   /* Control variables: */
-
-   // Target angle
-   private DoubleYoVariable desiredPositionRadians;
-
-   // Controller parameter variables
-   private DoubleYoVariable p_gain, d_gain, i_gain;
-
-   // This is the desired torque that we will apply to the fulcrum joint (PinJoint)
-   private double torque;
-
-   /* Constructor:
-      Where we instantiate and initialize control variables
-   */
-   public SimplePendulumController(SimplePendulumRobot robot)
-   {
-      this.robot = robot;
-      desiredPositionRadians = new DoubleYoVariable("DesiredPosRad", registry);
-      desiredPositionRadians.set(-1.5);
-
-      p_gain = new DoubleYoVariable("ProportionalGain", registry);
-      p_gain.set(250.0);
-      d_gain = new DoubleYoVariable("DerivativeGain", registry);
-      d_gain.set(100.0);
-      i_gain = new DoubleYoVariable("IntegralGain", registry);
-      i_gain.set(10.0);
-   }
-
-   @Override public void initialize()
-   {
-
-   }
-
-   private double positionError = 0;
-   private double integralError = 0;
-
-   @Override public void doControl()
-   {
-
-      // ERROR term: Compute the difference between the desired position the pendulum and its current position
-      positionError = desiredPositionRadians.getDoubleValue() - robot.getFulcrumAngularPosition();
-
-      // INTEGRAL term: Compute a simple numerical integration of the position error
-      integralError += positionError * SimplePendulumSimulation.DT;   //
-
-      // P.I.D
-      torque = p_gain.getDoubleValue() * positionError +
-            i_gain.getDoubleValue() * integralError +
-            d_gain.getDoubleValue() * (0 - robot.getFulcrumAngularVelocity());
-
-      robot.setFulcrumTorque(torque);
-
-   }
-
-   @Override public YoVariableRegistry getYoVariableRegistry()
-   {
-      return registry;
-   }
-
-   @Override public String getName()
-   {
-      return name;
-   }
-
-   @Override public String getDescription()
-   {
-      return name;
-   }
-}
-```
+<pre><code data-url-index="0" data-snippet="complete" id="ControllerClass"></code></pre>
 </details>
 
 <details>
 <summary> Simple Pendulum Robot </summary>
-
-```java
-package us.ihmc.exampleSimulations.simplePendulum;
-
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.robotics.Axis;
-import us.ihmc.robotics.dataStructures.variable.DoubleYoVariable;
-import us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
-import us.ihmc.simulationconstructionset.Link;
-import us.ihmc.simulationconstructionset.PinJoint;
-import us.ihmc.simulationconstructionset.Robot;
-
-import javax.vecmath.Vector3d;
-
-/**
- *
- * In this tutorial, lengths are expressed in meters (m), masses in kilograms (kg)
- *
- */
-public class SimplePendulumRobot extends Robot
-{
-   /*
-      Define the parameters of the robot
-   */
-   public static final double ROD_LENGTH = 1.0;
-   public static final double ROD_RADIUS = 0.01;
-   public static final double ROD_MASS = 0.00;
-
-   public static final double FULCRUM_RADIUS = 0.02;
-
-   public static final double BALL_RADIUS = 0.05;
-   public static final double BALL_MASS = 1.0;
-
-   public static final double FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y =
-         ROD_LENGTH * ROD_LENGTH * BALL_MASS; // I = mrˆ2 pendulum's resistance to changes to its rotation in  kg.mˆ2
-
-   /*
-      Initial state of the pendulum
-   */
-
-   private double fulcrumInitialPositionDegrees = 90.0;
-   private double fulcrumInitialPositionRadians = fulcrumInitialPositionDegrees * Math.PI / 180.0;
-   private double fulcrumInitialVelocity = 0.0;
-
-   /* Some joint state variables */
-   private DoubleYoVariable tau_fulcrum, q_fulcrum, qd_fulcrum; // Respectively Torque, Position, Velocity
-
-   /*
-      Define its constructor
-    */
-   public SimplePendulumRobot()
-   {
-      //` a. Call parent class "Robot" constructor. The string "SimplePendulum" will be the name of the robot.
-      super("pendulum");
-
-      // b. Add a joint to the robot
-      PinJoint fulcrumPinJoint = new PinJoint("FulcrumPin", new Vector3d(0.0, 0.0, 1.5), this, Axis.Y);
-      fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);
-      fulcrumPinJoint.setLink(pendulumLink());// pendulumLink() method defined next.
-      fulcrumPinJoint.setDamping(0.3);
-
-      q_fulcrum = fulcrumPinJoint.getQYoVariable();
-      qd_fulcrum = fulcrumPinJoint.getQDYoVariable();
-      tau_fulcrum = fulcrumPinJoint.getTauYoVariable();
-
-      this.addRootJoint(fulcrumPinJoint);
-   }
-
-   /**
-    * Fulcrum's angular position in radians
-    * @return angular position in radians
-    */
-   public double getFulcrumAngularPosition()
-   {
-      return q_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Fulcrum's angular velocity in radians per seconds
-    * @return angular velocity in radians per seconds
-    */
-   public double getFulcrumAngularVelocity()
-   {
-      return qd_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Fulcrum's torque in Newton meter
-    * @return Torque in Newton meter
-    */
-   public double getFulcrumTorque()
-   {
-      return tau_fulcrum.getDoubleValue();
-   }
-
-   /**
-    * Set Fulcrum's torque in Newton meter
-    * @return Torque in Newton meter
-    */
-   public void setFulcrumTorque(double tau)
-   {
-      this.tau_fulcrum.set(tau);
-   }
-
-   /**
-    * Create the first link for the DoublePendulumRobot.
-    */
-   private Link pendulumLink()
-   {
-      Link pendulumLink = new Link("PendulumLink");
-      pendulumLink.setMomentOfInertia(0.0, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, 0.0);
-      pendulumLink.setMass(BALL_MASS);
-      pendulumLink.setComOffset(0.0, 0.0, -ROD_LENGTH);
-
-      LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();
-      pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());
-      pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);
-      pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());
-      pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());
-      pendulumLink.setLinkGraphics(pendulumGraphics);
-
-      return pendulumLink;
-   }
-
-}
-```
-
+<pre><code data-url-index="1" data-snippet="complete" id="RobotClass"></code></pre>
 </details>
-
-
-
 
 <details>
 <summary> Simple Pendulum Simulation </summary>
-
-```java
-package us.ihmc.exampleSimulations.simplePendulum;
-
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-
-
-public class SimplePendulumSimulation
-{
-
-   public static final double DT = 0.001;
-   private SimulationConstructionSet sim;
-
-   public SimplePendulumSimulation()
-   {
-      SimplePendulumRobot robot = new SimplePendulumRobot();
-      robot.setController(new SimplePendulumController(robot));
-
-      SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();
-      parameters.setDataBufferSize(32000);
-
-      sim = new SimulationConstructionSet(robot, parameters);
-      sim.setDT(DT, 20);
-      sim.setGroundVisible(true);
-      sim.setCameraPosition(0, -9.0, 0.6);
-      sim.setCameraFix(0.0, 0.0, 0.70);
-
-      sim.setSimulateDuration(60.0); // sets the simulation duration to 60 seconds
-
-      Thread myThread = new Thread(sim);
-      myThread.start();
-   }
-
-   public static void main(String[] args)
-   {
-      new SimplePendulumSimulation();
-   }
-}
-```
+<pre><code data-url-index="2" data-snippet="complete" id="SimulationClass"></code></pre>
 </details>
 
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumController.java","https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumRobot.java","https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumSimulation.java")></script>

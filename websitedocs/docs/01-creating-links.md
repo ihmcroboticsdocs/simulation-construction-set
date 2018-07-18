@@ -23,40 +23,7 @@ The following code is where you will be declaring final variables for shapes lik
 
 We typically declare these variables separately than the creation of the shapes so that they can can be more easily changed and found.
 
-```java
-
-package us.ihmc.exampleSimulations.linkExamples;
-
-import java.util.ArrayList;
-import javax.vecmath.Point2d;
-
-import us.ihmc.graphicsDescription.MeshDataGenerator;
-import us.ihmc.graphicsDescription.MeshDataHolder;
-import us.ihmc.graphicsDescription.appearance.AppearanceDefinition;
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
-import us.ihmc.simulationconstructionset.Link;
-import us.ihmc.simulationconstructionset.Robot;
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-
-public class LinkExamplesSimulation
-{
-    private SimulationConstructionSet sim;
-    
-    private static final double SPHERE_R = 0.15;
-    
-    private static final double ELLIPSOID_RX = 0.1, ELLIPSOID_RY = 0.2, ELLIPSOID_RZ = 0.3;
-    
-    private static final double CYLINDER_H = 0.4, CYLINDER_R = 0.05;
-    
-    private static final double ARC_TORUS_START_ANG = 0.0, ARC_TORUS_END_ANG = 1.5 * Math.PI;
-    private static final double ARC_TORUS_MAJ_RAD = 0.2, ARC_TORUS_MIN_RAD = 0.05;
-    
-    private static final double OFFSET = 1.5, COORD_LENGTH = 0.5;
-    
-    private static final double WEDGE_X = 0.4, WEDGE_Y = 0.3, WEDGE_Z = 0.2;   
-}
-```
+<pre><code data-url-index="0" data-snippet="portion" data-start="package" data-end="public LinkExamplesSimulation()" id="LinkExamplesSimVariables"></code></pre>
 
 The parameters that adjust placement and spacing of the shapes are the `OFFSET` and `COORD_LENGTH`.
 
@@ -64,212 +31,26 @@ The parameters that adjust placement and spacing of the shapes are the `OFFSET` 
    The structure of this code should now be familiar to you. Notice, however, that this is purely a static graphic we are creating. There is no robot, and thus no dynamics.  
    This will allow us to focus on creating the graphics of a link.
    
-   ```java
-   
-   public LinkExamplesSimulation()
-   {
-       Robot nullRob = null;
-       sim = new SimulationConstructionSet(nullRob);
-       // position the camera to view links
-       sim.setCameraPosition(10.0, 6.0, 3.0);
-       sim.setCameraFix(0.5, 0.5, 0.0);
-       Link exampleShapes = exampleShapes();
-       sim.addStaticLink(exampleShapes);
-       sim.setGroundVisible(false);
-   
-       Thread myThread = new Thread(sim);
-       myThread.start();
-   }
-   ```
+ <pre><code data-url-index="0" data-snippet="portion" data-start="public LinkExamplesSimulation()" data-end="public static void main" id="linkExamplesSimConstructor"></code></pre>
    
 ### 5. Next add the method exampleShapes to your LinkExampleSimulation class
 This method will show you examples of how to create simple shapes, assign a color, and add them to your simulation.
 
 In this method there are examples of a Sphere, Ellipsoid, Cylinder, ArcTorus, Extruded Polygon, Mesh Data, and a Gridded Polytope.
 
-```java
-private Link exampleShapes()
-{
-    Link ret = new Link("example shapes");
-    LinkGraphicsDescription linkGraphics = new LinkGraphicsDescription();
-
-    // Sphere
-    linkGraphics.translate(OFFSET, 0.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    linkGraphics.addSphere(SPHERE_R, YoAppearance.Black());
-
-    // Ellipsoid
-    linkGraphics.translate(OFFSET, 0.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    linkGraphics.addEllipsoid(ELLIPSOID_RX,
-                            ELLIPSOID_RY,
-                            ELLIPSOID_RZ,
-                            YoAppearance.Black());
-
-    // Cylinder
-    linkGraphics.translate(-1 * OFFSET, 1.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    linkGraphics.addCylinder(CYLINDER_H, CYLINDER_R, YoAppearance.Black());
-
-    // ArcTorus
-    linkGraphics.translate(OFFSET, 0.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    linkGraphics.addArcTorus( ARC_TORUS_START_ANG,
-                            ARC_TORUS_END_ANG,
-                            ARC_TORUS_MAJ_RAD,
-                            ARC_TORUS_MIN_RAD,
-                            YoAppearance.Black());
-
-    // Extruded Polygon
-    linkGraphics.translate(-1 * OFFSET, 1.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    ArrayList<Point2d> polygonPoints = new ArrayList<Point2d>();
-    polygonPoints.add(new Point2d());
-    polygonPoints.add(new Point2d(0.4, 0.0));
-    polygonPoints.add(new Point2d(0.3, 0.3));
-    double height = 0.25;
-    linkGraphics.addExtrudedPolygon(polygonPoints, height, YoAppearance.Black());
-
-    // Mesh Data
-    linkGraphics.translate(OFFSET, 0.0, 0.0);
-    linkGraphics.addCoordinateSystem(COORD_LENGTH);
-    MeshDataHolder meshData = MeshDataGenerator.Wedge(WEDGE_X, WEDGE_Y, WEDGE_Z);
-    AppearanceDefinition meshAppearance = YoAppearance.Black();
-    linkGraphics.addMeshData(meshData, meshAppearance );
-
-    ret.setLinkGraphics(linkGraphics);
-
-    return ret;
-}
-```
+ <pre><code data-url-index="0" data-snippet="portion" data-start="private Link exampleShapes()" data-end="&#10&#10}" id="linkExamplesSimExampleShapes"></code></pre>
    
 ### 6. Add the main method to your class
 This method should just simply create a new `LinkExamplesSimulation`.
 
 Just as follows:
-```java
-public static void main(String[] args)
-{
-    new LinkExamplesSimulation();
-}
-```
+ <pre><code data-url-index="0" data-snippet="portion" data-start="public static void" data-end="&#10&#10" id="linkExamplesSimMain"></code></pre>
    
    
 ### Full code for the class
 <details>
 <summary> Link Examples Simulation </summary>
-
-```java
-package us.ihmc.exampleSimulations.linkExamples;
-
-import java.util.ArrayList;
-import javax.vecmath.Point2d;
-
-import us.ihmc.graphicsDescription.MeshDataGenerator;
-import us.ihmc.graphicsDescription.MeshDataHolder;
-import us.ihmc.graphicsDescription.appearance.AppearanceDefinition;
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
-import us.ihmc.simulationconstructionset.Link;
-import us.ihmc.simulationconstructionset.Robot;
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-
-
-public class LinkExamplesSimulation
-{
-   private SimulationConstructionSet sim;
-
-   private static final double SPHERE_R = 0.15;
-
-   private static final double ELLIPSOID_RX = 0.1, ELLIPSOID_RY = 0.2, ELLIPSOID_RZ = 0.3;
-
-   private static final double CYLINDER_H = 0.4, CYLINDER_R = 0.05;
-
-   private static final double ARC_TORUS_START_ANG = 0.0, ARC_TORUS_END_ANG = 1.5 * Math.PI;
-   private static final double ARC_TORUS_MAJ_RAD = 0.2, ARC_TORUS_MIN_RAD = 0.05;
-
-   private static final double OFFSET = 1.5, COORD_LENGTH = 0.5;
-
-   private static final double WEDGE_X = 0.4, WEDGE_Y = 0.3, WEDGE_Z = 0.2;
-
-
-   public LinkExamplesSimulation()
-   {
-      Robot nullRob = null;
-      sim = new SimulationConstructionSet(nullRob);
-      // position the camera to view links
-      sim.setCameraPosition(10.0, 6.0, 3.0);
-      sim.setCameraFix(0.5, 0.5, 0.0);
-      Link exampleShapes = exampleShapes();
-      sim.addStaticLink(exampleShapes);
-      sim.setGroundVisible(false);
-
-      Thread myThread = new Thread(sim);
-      myThread.start();
-   }
-
-
-   public static void main(String[] args)
-   {
-      new LinkExamplesSimulation();
-   }
-
-
-   private Link exampleShapes()
-   {
-      Link ret = new Link("example shapes");
-      LinkGraphicsDescription linkGraphics = new LinkGraphicsDescription();
-
-      // Sphere
-      linkGraphics.translate(OFFSET, 0.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      linkGraphics.addSphere(SPHERE_R, YoAppearance.Black());
-
-      // Ellipsoid
-      linkGraphics.translate(OFFSET, 0.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      linkGraphics.addEllipsoid(ELLIPSOID_RX,
-                                ELLIPSOID_RY,
-                                ELLIPSOID_RZ,
-                                YoAppearance.Black());
-
-      // Cylinder
-      linkGraphics.translate(-1 * OFFSET, 1.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      linkGraphics.addCylinder(CYLINDER_H, CYLINDER_R, YoAppearance.Black());
-
-      // ArcTorus
-      linkGraphics.translate(OFFSET, 0.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      linkGraphics.addArcTorus( ARC_TORUS_START_ANG,
-                                ARC_TORUS_END_ANG,
-                                ARC_TORUS_MAJ_RAD,
-                                ARC_TORUS_MIN_RAD,
-                                YoAppearance.Black());
-
-      // Extruded Polygon
-      linkGraphics.translate(-1 * OFFSET, 1.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      ArrayList<Point2d> polygonPoints = new ArrayList<Point2d>();
-      polygonPoints.add(new Point2d());
-      polygonPoints.add(new Point2d(0.4, 0.0));
-      polygonPoints.add(new Point2d(0.3, 0.3));
-      double height = 0.25;
-      linkGraphics.addExtrudedPolygon(polygonPoints, height, YoAppearance.Black());
-
-      // Mesh Data
-      linkGraphics.translate(OFFSET, 0.0, 0.0);
-      linkGraphics.addCoordinateSystem(COORD_LENGTH);
-      MeshDataHolder meshData = MeshDataGenerator.Wedge(WEDGE_X, WEDGE_Y, WEDGE_Z);
-      AppearanceDefinition meshAppearance = YoAppearance.Black();
-      linkGraphics.addMeshData(meshData, meshAppearance );
-
-      ret.setLinkGraphics(linkGraphics);
-
-      return ret;
-   }
-
-}
-```
+<pre><code data-url-index="0" data-snippet="complete" id="LinkExamplesSimClass"></code></pre>
 </details>
 
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/linkExamples/LinkExamplesSimulation.java")></script>

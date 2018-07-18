@@ -6,58 +6,7 @@ title: Create a New Class FallingBrickSimulation
    
    These are just the initial variables and environment setup.
 
+<pre><code data-url-index="0" data-snippet="complete" id="FallingBrickSim"></code></pre>
 
-```java
-package us.ihmc.exampleSimulations.fallingBrick  ;
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.simulationconstructionset.examples.FallingBrickRobot;
-public class FallingBrickSimulation
-{
-    private enum GROUND_APPEARANCE
-    {
-        EARTH, STONE, ALUMINUM
-    }
-    SimulationConstructionSet sim;
-    public FallingBrickSimulation()
-    {
-        GROUND_APPEARANCE appearance = GROUND_APPEARANCE.EARTH;
-        FallingBrickRobot fallingBrick = new FallingBrickRobot();
-        sim = new SimulationConstructionSet(fallingBrick, new SimulationConstructionSetParameters(16342));
-        sim.setDT(0.001, 20);
-        sim.setCameraPosition(-1.5, -2.5, 0.5);
-        sim.setCameraFix(0.0, 0.0, 0.4);
-        sim.setCameraTracking(false, true, true, false);
-        sim.setCameraDolly(false, true, true, false);
-        // Set up some graphs:
-        sim.setupGraph("q_z");
-        sim.setupEntryBox("qd_x");
-        sim.setupEntryBox("qd_y");
-        sim.setupEntryBox("qd_z");
-        sim.setupEntryBox("qd_wx");
-        sim.setupEntryBox("qd_wy");
-        sim.setupEntryBox("qd_wz");
-        switch (appearance)
-        {
-            case EARTH:
-                sim.setGroundAppearance(YoAppearance.EarthTexture());
-                break;
-            case STONE:
-                sim.setGroundAppearance(YoAppearance.StoneTexture());
-                break;
-            case ALUMINUM:
-                sim.setGroundAppearance(YoAppearance.AluminumMaterial());
-                break;
-        }
-        Thread myThread = new Thread(sim);
-        myThread.start();
-    }
-    public static void main(String[] args)
-    {
-        new FallingBrickSimulation();
-    }
-}
 
-```
-
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/fallingBrick/FallingBrickSimulation.java")></script>

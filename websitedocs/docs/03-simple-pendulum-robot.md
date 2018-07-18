@@ -48,36 +48,7 @@ public class SimplePendulumRobot extends Robot // SimplePendulumRobot inherits s
  
 <details open>
 <summary> Constants and Initial Values </summary>
-
-```java
-public class SimplePendulumRobot extends Robot // SimplePendulumRobot inherits some properties and methods from Robot class
-{
-   /*
-     Pendulum constants and initial values
-      - Lengths are in meters (m)
-      - Masses are in kilograms (kg)
-   */
-   
-   public static final double FULCRUM_RADIUS = 0.02;
-   
-   public static final double ROD_LENGTH = 1.0;
-   public static final double ROD_RADIUS = 0.01;
-   public static final double ROD_MASS = 0.01;
-
-   public static final double BALL_RADIUS = 0.05;
-   public static final double BALL_MASS = 1.0;
-
-   // I = mrˆ2 pendulum's resistance to changes to its rotation in kg.mˆ2
-   public static final double FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y = ROD_LENGTH * ROD_LENGTH * BALL_MASS; 
-
-   /*
-      Initial state of the pendulum
-   */
-
-   private double fulcrumInitialPositionDegrees = 90.0;
-   private double fulcrumInitialPositionRadians = fulcrumInitialPositionDegrees * Math.PI / 180.0;
-   private double fulcrumInitialVelocity = 0.0;
-```
+<pre><code data-url-index="0" data-snippet="portion" id="SimplePendulumRobotVariables" data-start="public class SimplePendulumRobot" data-end="/*&#10      Define its constructor"></code></pre>
 </details>
 
 ***Lengths are expressed in meters (m), masses in kilograms (kg)**
@@ -87,17 +58,7 @@ public class SimplePendulumRobot extends Robot // SimplePendulumRobot inherits s
 Before continuing, make sure you have added the following classes to your imports:  
 <details open>
 <summary> Required Imports </summary>
-
-```java
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.robotics.Axis;
-import us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
-import us.ihmc.simulationconstructionset.Link;
-import us.ihmc.simulationconstructionset.PinJoint;
-import us.ihmc.simulationconstructionset.Robot;
-
-import javax.vecmath.Vector3d;
-```
+<pre><code data-url-index="0" data-snippet="portion" id="SimplePendulumRobotImports" data-start="import" data-end="&#10&#10"></code></pre>
 </details>   
 
 ### 4. Define the Constructor of the Robot:
@@ -120,20 +81,19 @@ import javax.vecmath.Vector3d;
 * **Call Parent Constructor:**  
 `super("pendulum");` creates an instance of the class Robot named "pendulum" in the SCS system.
 
-### 5. Create the Pendulum's Rod Using a Link:
+### 5. Create the Pendulum's Rod Using a Link and the 3D Graphics which Represent the Link and Joint in SCS:
+
+Add the following method to your class:
+<details open>
+<summary> pendulumLink Method </summary>
+<pre><code data-url-index="0" data-snippet="portion" id="pendulumLink" data-start="private Link pendulumLink()" data-end="&#10&#10}"></code></pre>
+</details>  
 
 Add the following to the end of the constructor:
 <details open>
-<summary> Create pendulumLink </summary>
-
-```java
-      // b. Create a link
-      Link pendulumLink = new Link("PendulumLink");
-      pendulumLink.setMass(BALL_MASS);
-      pendulumLink.setComOffset(0.0, 0.0, -ROD_LENGTH);
-      pendulumLink.setMomentOfInertia(0.0, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, 0.0);
-```
-</details>   
+<summary> Create pendulumLink </summary> 
+<pre><code data-url-index="0" data-snippet="portion" id="pendulumLinkCreate" data-start="fulcrumPinJoint.setLink" data-end="&#10"></code></pre>
+</details>  
 
 * **Create a new Link:**  
 `Link pendulumLink = new Link("PendulumLink");`  
@@ -148,22 +108,35 @@ This line sets the center of mass offset of the link to be located at the tip of
 This line sets the moment of inertia about the Y axis. Note that the moment of inertia is defined about the center of mass.
 Therefore, if the moment of inertia is set to zero, the link will be a point mass.  
 
+* **Create a new LinkGraphicsDescription:**  
+`LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();`  
+This line creates a new instance of the LinkGraphicsDescription class which, once attached to its `LinkGraphics`, is used to visually represent links in the SCS 3D view. 
+ 
+* **Add the pivot:**  
+`pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());`  
+Here we add a purple sphere 3D object to `pendulumGraphics`. Since no transformation has been applied to this graphic component the sphere's position is (0.0, 0.0, 0.0). This is used represent the pivot/fulcrum of the pendulum.  
+
+* **Add the rod:**  
+`pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);`  
+Translates from the current position by the specified distances. Graphic components added after translation will appear in the new location. The coordinate system for these translations is based on those that preceded it.   
+`pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());`  
+Adds a 1m long black cylinder representing the rod.  
+
+* **Add the ball:**  
+`pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());`  
+Adds a yellow sphere representing the ball at the end of the rod.   
+
+* **Attach the LinkGraphicsDescription to its Link:**  
+`pendulumLink.setLinkGraphics(pendulumGraphics);`  
+This line associates our `pendulumGraphics` object with the `pendulumLink` object and in doing so, translates and rotate the graphic components to be in the same frame of reference as the `pendulumLink`.   
+ 
+
 ### 6. Create the Pendulum's Pivot or fulcrum Using a PinJoint:
 
 Add the following to the end of the constructor:
 <details open>
 <summary> Create: fulcrumPinJoint </summary>
-
-```java
-      // c. Create a pin joint attached to the link
-      PinJoint fulcrumPinJoint = new PinJoint("FulcrumPinJoint", new Vector3d(0.0, 0.0, 1.5), this, Axis.Y);
-      fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);
-      fulcrumPinJoint.setDamping(0.3);
-      fulcrumPinJoint.setLink(pendulumLink); 
-      
-      // d. Add fulcrumPinJoint as the root joint of the robot
-      this.addRootJoint(fulcrumPinJoint);
-```
+<pre><code data-url-index="0" data-snippet="portion" id="fulcrumPinJoint" data-start="// b. Add a joint" data-end="}"></code></pre>
 </details>   
 
 * **Create a pin joint:**   
@@ -193,47 +166,6 @@ This ensures the tree structure (forest structure if there are multiple root joi
 ![note](/img/attention-40.png) **Note on reference frames:**
 *In SCS, like the URDF robot description file format, when a joint is created its reference frame is calculated relative to the previous joint's reference frame.
 One exception is that joints added as **root joints** of a robot are positioned relative to the world reference frame. The reference frame of each `Link` attached to a `Joint` is identical to the reference frame of the `Joint`.* 
- 
-
-### 7. Create the 3D Graphics which Represent the Link and Joint in SCS
-
-Add the following to the end of the constructor:
-<details open>
-<summary> 3D Object Creation </summary>
-
-```java
-      // e. Add 3D objects
-      LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();
-      pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());
-      pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);
-      pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());
-      pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());
-      pendulumLink.setLinkGraphics(pendulumGraphics);
-```
-</details>   
-
-* **Create a new LinkGraphicsDescription:**  
-`LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();`  
-This line creates a new instance of the LinkGraphicsDescription class which, once attached to its `LinkGraphics`, is used to visually represent links in the SCS 3D view. 
- 
-* **Add the pivot:**  
-`pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());`  
-Here we add a purple sphere 3D object to `pendulumGraphics`. Since no transformation has been applied to this graphic component the sphere's position is (0.0, 0.0, 0.0). This is used represent the pivot/fulcrum of the pendulum.  
-
-* **Add the rod:**  
-`pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);`  
-Translates from the current position by the specified distances. Graphic components added after translation will appear in the new location. The coordinate system for these translations is based on those that preceded it.   
-`pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());`  
-Adds a 1m long black cylinder representing the rod.  
-
-* **Add the ball:**  
-`pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());`  
-Adds a yellow sphere representing the ball at the end of the rod.   
-
-* **Attach the LinkGraphicsDescription to its Link:**  
-`pendulumLink.setLinkGraphics(pendulumGraphics);`  
-This line associates our `pendulumGraphics` object with the `pendulumLink` object and in doing so, translates and rotate the graphic components to be in the same frame of reference as the `pendulumLink`.   
- 
 
 ### 8. Add the Robot to the Simulation
 
@@ -257,82 +189,10 @@ with
 ### Full code for the class:  
 <details>
 <summary> Simple Pendulum Robot </summary>
-
-```java
-package us.ihmc.exampleSimulations.simplePendulum;
-
-import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.robotics.Axis;
-import us.ihmc.robotics.robotDescription.LinkGraphicsDescription;
-import us.ihmc.simulationconstructionset.Link;
-import us.ihmc.simulationconstructionset.PinJoint;
-import us.ihmc.simulationconstructionset.Robot;
-
-import javax.vecmath.Vector3d;
-
-
-public class SimplePendulumRobot extends Robot // SimplePendulumRobot inherits some properties and methods from Robot class
-{
-   /*
-     Pendulum constants and initial values
-      - Lengths are in meters (m)
-      - Masses are in kilograms (kg)
-   */
-
-   public static final double FULCRUM_RADIUS = 0.02;
-
-   public static final double ROD_LENGTH = 1.0;
-   public static final double ROD_RADIUS = 0.01;
-   public static final double ROD_MASS = 0.01;
-
-   public static final double BALL_RADIUS = 0.05;
-   public static final double BALL_MASS = 1.0;
-
-   // I = mrˆ2 pendulum's resistance to changes to its rotation in kg.mˆ2
-   public static final double FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y = ROD_LENGTH * ROD_LENGTH * BALL_MASS;
-
-   /*
-      Initial state of the pendulum
-   */
-
-   private double fulcrumInitialPositionDegrees = 90.0;
-   private double fulcrumInitialPositionRadians = fulcrumInitialPositionDegrees * Math.PI / 180.0;
-   private double fulcrumInitialVelocity = 0.0;
-
-   /*
-       Constructor creates an instance of the class SimplePendulumRobot
-   */
-   public SimplePendulumRobot()
-   {
-      // a. Call parent class "Robot" constructor. The string "SimplePendulum" will be the name of the robot.
-      super("SimplePendulum");
-
-      // b. Create a link
-      Link pendulumLink = new Link("PendulumLink");
-      pendulumLink.setMass(BALL_MASS);
-      pendulumLink.setComOffset(0.0, 0.0, -ROD_LENGTH);
-      pendulumLink.setMomentOfInertia(0.0, FULCRUM_MOMENT_OF_INERTIA_ABOUT_Y, 0.0);
-
-      // c. Create a pin joint attached to the link
-      PinJoint fulcrumPinJoint = new PinJoint("FulcrumPinJoint", new Vector3d(0.0, 0.0, 1.5), this, Axis.Y);
-      fulcrumPinJoint.setInitialState(fulcrumInitialPositionRadians, fulcrumInitialVelocity);
-      fulcrumPinJoint.setDamping(0.3);
-      fulcrumPinJoint.setLink(pendulumLink);
-
-      // d. Add fulcrumPinJoint as the root joint of the robot
-      this.addRootJoint(fulcrumPinJoint);
-
-      // e. Add 3D objects
-      LinkGraphicsDescription pendulumGraphics = new LinkGraphicsDescription();
-      pendulumGraphics.addSphere(FULCRUM_RADIUS, YoAppearance.BlueViolet());
-      pendulumGraphics.translate(0.0, 0.0, -ROD_LENGTH);
-      pendulumGraphics.addCylinder(ROD_LENGTH, ROD_RADIUS, YoAppearance.Black());
-      pendulumGraphics.addSphere(BALL_RADIUS, YoAppearance.Chartreuse());
-      pendulumLink.setLinkGraphics(pendulumGraphics);
-   }
-}
-```
+<pre><code data-url-index="0" data-snippet="complete" id="SimplePendulumRobotClass"></code></pre>
 </details>
+
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumRobot.java")></script>
 
 
  

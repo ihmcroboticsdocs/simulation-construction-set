@@ -5,39 +5,7 @@ title: Mobile Simulation
 ### Create the class MobileSimulation
    Fill it in as follows:
 
-```java
-package us.ihmc.exampleSimulations.mobile;
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-/**
- * A simulation of a child’s mobile toy that uses a tree structure of 21 gimbal
- * joints (63 degrees of freedom total).
- */
-public class MobileSimulation
-{
-   private SimulationConstructionSet sim;
-   public MobileSimulation()
-   {
-      // Create an instance of MobileRobot
-      MobileRobot mobile = new MobileRobot();
-      // Instantiate a SCS object using the MobileRobot object reference
-      sim = new SimulationConstructionSet(mobile);
-      sim.setGroundVisible(false);
-      sim.setCameraTracking(false, false, false, false);
-      sim.setCameraDolly(false, false, false, false);
-      // set camera to a convenient viewing angle
-      sim.setCameraPosition(1.0, 1.0, 0.5);
-      sim.setCameraFix(0.0, 0.0, 0.8);
-      sim.setCameraTrackingVars("ef_track00_x", "ef_track00_y", "ef_track00_z");
-      sim.setDT(0.02, 1);
-      Thread myThread = new Thread(sim);
-      myThread.start();
-   }
-   public static void main(String[] args)
-   {
-      new MobileSimulation();
-   }
-}
-```
+<pre><code data-url-index="0" data-snippet="complete" id="MobileSimulation"></code></pre>
 
 Note that the integration time step is set to 0.02 seconds: `sim.setDT(0.02, 1);`
 
@@ -54,3 +22,5 @@ Instead of tracking and dollying the camera position and fix are set to get a go
    `sim.setCameraDolly(false,false,false,false);`  
    `sim.setCameraPosition(1.0,1.0,0.5);`  
    `sim.setCameraFix(0.0,0.0,0.8);`  
+   
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileSimulation.java")></script>

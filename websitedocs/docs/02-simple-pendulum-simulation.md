@@ -47,43 +47,11 @@ Don't forget to add `-Xms4096m -Xmx4096m` to your VM's run configuration as spec
 
 Before we add a robot, there are some basic parameters and settings that you should apply to `SimulationConstructionSet`.  Replace the simulation class contents with the following:
 
-```java
-package us.ihmc.exampleSimulations.simplePendulum;
 
-import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-
-/**
- * SimplePendulumSimulation
- */
-public class SimplePendulumSimulation
-{
-   public static final double DT = 0.001;
-   private SimulationConstructionSet sim;
+<pre><code data-url-index="0" data-snippet="complete" id="SimplePendulum"></code></pre>
 
 
-   public SimplePendulumSimulation()
-   {
-      SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();
-      parameters.setDataBufferSize(32000);    
-
-      sim = new SimulationConstructionSet(parameters);
-      sim.setDT(DT, 20);                      
-      sim.setGroundVisible(true);             
-      sim.setCameraPosition(0, -9.0, 0.6);    
-      sim.setCameraFix(0.0, 0.0, 0.70);       
-      sim.setSimulateDuration(60.0);          
-
-      Thread myThread = new Thread(sim);
-      myThread.start();
-   }
-
-   public static void main(String[] args)
-   {
-      new SimplePendulumSimulation();
-   }
-}
-```
+<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumSimulation.java")></script>
 
 <br>
 
