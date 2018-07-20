@@ -63,6 +63,7 @@ Promise
 									endIndex = dataFromSource.indexOf(codeBlock
 											.getAttribute('data-end'),
 											startIndex);
+									if(endIndex < 0) throw "End string not found at element id: " + codeBlock.id;
 									codeChunk = dataFromSource.substring(
 											startIndex, endIndex);
 								}
@@ -75,6 +76,7 @@ Promise
 								for (j = 0; j < portions.length; j++) {
 									startIndex = dataFromSource
 											.indexOf(portions[j][0]);
+									if(startIndex < 0) throw "Start string not found at element id: " + codeBlock.id;
 
 									// Substring with start index to rest of
 									// file
@@ -86,6 +88,7 @@ Promise
 									} else {
 										endIndex = dataFromSource.indexOf(
 												portions[j][1], startIndex);
+										if(endIndex < 0) throw "End string not found at element id: " + codeBlock.id;
 										codeChunk = codeChunk
 												+ "\n"
 												+ dataFromSource.substring(
