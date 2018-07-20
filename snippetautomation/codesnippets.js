@@ -10,10 +10,18 @@ var numberOfSources = sources.length;
 var allCodeBlocks = Array.from(document.getElementsByTagName('code'));
 var urls = []; //array of data from each source
 
+//Throws error on invalid url
+function notValidURL(response) {
+	if(!response.ok) {
+		throw Error(response.statusText);
+	}
+	return response;
+}
+
 //Get and operate on data from source files
 for(i = 0; i < numberOfSources; i++) 
 	{
-	urls[i] = fetch(sources[i]).then(function(response) {return response.text()});
+	urls[i] = fetch(sources[i]).then(notValidURL).then(function(response) {return response.text()});
 	}
 Promise.all(urls).then(function(values) {
 	for(i = 0; i < numberOfSources; i++)
