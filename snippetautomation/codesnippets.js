@@ -1,5 +1,6 @@
 hljs.initHighlightingOnLoad();
 
+console.log("The script has started running");
 // Get the array of urls
 //var allScripts = document.getElementsByTagName('script');
 //var script = allScripts[allScripts.length - 1];
