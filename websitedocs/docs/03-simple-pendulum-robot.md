@@ -192,7 +192,7 @@ with
 <pre><code data-url-index="0" data-snippet="complete" id="SimplePendulumRobotClass"></code></pre>
 </details>
 
-<script src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumRobot.java")></script>
+<script id="snippetscript" src="../snippetautomation/codesnippets.js" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/simplePendulum/SimplePendulumRobot.java")></script>
 
 
  

@@ -1,7 +1,6 @@
 ---
 title: MobileRobot Class Description
 ---
-<div id="mainPortion">
 
 ## 1. Add the following code to the MobileRobot Class
 
@@ -129,6 +128,5 @@ For more detailed information on joints check out the [Robots and Joint API Page
 <pre><code data-url-index="0" data-snippet="complete" id="MobileRobotClass"></code></pre>
 </details>
 
-<script src="../snippetautomation/codesnippets.js" id="snippetscript" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileRobot.java","https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileSimulation.java")></script>
+<script src="https://rawgit.com/ihmcroboticsdocs/simulation-construction-set/master/websitedocs/website/static/snippetautomation/codesnippets.js" id="snippetscript" sources=Array.of("https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileRobot.java","https://rawgit.com/ihmcrobotics/ihmc-open-robotics-software/master/example-simulations/src/main/java/us/ihmc/exampleSimulations/mobile/MobileSimulation.java")></script>
 
-</div>
