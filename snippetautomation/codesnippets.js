@@ -1,5 +1,3 @@
-console.log("The script is running");
-
 hljs.initHighlightingOnLoad();
 
 // Get the array of urls
