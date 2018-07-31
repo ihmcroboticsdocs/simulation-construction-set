@@ -55,7 +55,7 @@ Creation of the joints, including their offsets, damping, and initialization sho
 ## 2. Now let's create the links
    Add the following to MobileRobot after `super("Mobile");`
    
-<pre><code data-url-index="0" data-snippet="portion" data-start="// Create the top" data-end="// create first gimbal joint at the top of the mobile" id="MobileRobotCreateLinks"></code></pre>
+<pre><code data-url-index="0" data-snippet="portion" data-start="woii// Create the top" data-end="// create first gimbal joint at the top of the mobile" id="MobileRobotCreateLinks"></code></pre>
 
 We start with the top link, which is a flattened cylinder.
 We add it to the robot using `Robot.addStaticLink(Link)` since it is not attached to any joints and therefore cannot move.
@@ -71,7 +71,7 @@ Since the first joint of the robot had an offset of `(0.0, 0.0, 1.0)`, we need t
 
 ## 3. Next, we will add and examine the steps creating the crossbar geometry
    Add the following to MobileRobot:
-<pre><code data-url-index="0" data-snippet="portion" data-start="/**&#10    * Creates a cross bar link from the given parameters." data-end=" /**&#10    *" id="MobileRobotCrossBar"></code></pre>
+<pre><code data-url-index="0" data-snippet="portion" data-start="woii /**&#10    * Creates a cross bar link from the given parameters." data-end=" /**&#10    *" id="MobileRobotCrossBar"></code></pre>
 
 We first create the upper sphere-capped cylinder which projects downward. Since the origin of a cylinder is the center of its base, we must first translate down the length of the upper cylinder (length/2.0) before adding it:
    
