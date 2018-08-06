@@ -60,7 +60,7 @@ Promise
 								} else {
 									endIndex = dataFromSource.indexOf(codeBlock
 											.getAttribute('data-end'),
-											startIndex);
+											startIndex) + codeBlock.getAttribute('data-end').length;
 									if(endIndex < 0) throw "End string not found at element id: " + codeBlock.id;
 									codeChunk = dataFromSource.substring(
 											startIndex, endIndex);
